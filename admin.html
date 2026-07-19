@@ -82,11 +82,59 @@ Login
 
       <div id="bookForm">
         <h3 id="bookFormTitle">Mark car as booked</h3>
-        <div class="field"><label for="bfName">Customer name</label><input id="bfName" type="text"></div>
-        <div class="field"><label for="bfPhone">Customer phone</label><input id="bfPhone" type="text"></div>
-        <div class="field"><label for="bfRoute">Route</label><input id="bfRoute" type="text" placeholder="e.g. Nashik → Pune"></div>
-        <div class="field"><label for="bfNotes">Notes (optional)</label><textarea id="bfNotes" rows="2"></textarea></div>
-        <div class="form-btns">
+        <div class="field">
+    <label>Customer Name</label>
+    <input id="bfName" type="text">
+</div>
+
+<div class="field">
+    <label>Phone</label>
+    <input id="bfPhone" type="tel">
+</div>
+
+<div class="field">
+    <label>Pickup</label>
+    <input id="bfPickup" type="text">
+</div>
+
+<div class="field">
+    <label>Destination</label>
+    <input id="bfDestination" type="text">
+</div>
+
+<div class="field">
+    <label>Seats Required</label>
+    <input id="bfSeats" type="number" min="1" value="1">
+</div>
+
+<div class="field">
+    <label>Total Fare (₹)</label>
+    <input id="bfFare" type="number" min="0">
+</div>
+
+<div class="field">
+    <label>Advance Paid (₹)</label>
+    <input id="bfAdvance" type="number" min="0" value="0" oninput="calculateBalance()">
+</div>
+
+<div class="field">
+    <label>Balance (₹)</label>
+    <input id="bfBalance" type="number" readonly>
+</div>
+
+<div class="field">
+    <label>Payment Status</label>
+    <select id="bfPayment">
+        <option>Pending</option>
+        <option>Partial</option>
+        <option>Paid</option>
+    </select>
+</div>
+
+<div class="field">
+    <label>Notes</label>
+    <textarea id="bfNotes"></textarea>
+</div>
           <button class="btn-save" onclick="saveBooking()">Save &amp; mark booked</button>
           <button class="btn-cancel" onclick="closeBookForm()">Cancel</button>
         </div>
