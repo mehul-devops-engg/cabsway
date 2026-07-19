@@ -228,50 +228,171 @@ document.getElementById('bfNotes').value = '';
     pendingCar = null;
     document.getElementById('bookForm').style.display = 'none';
   }
-  async function saveBooking(){
-    if(!pendingCar) return;
+  async function saveBooking() {
+
+    if (!pendingCar) return;
+
     const extra = {
-      name: document.getElementById('bfName').value.trim(),
-      phone: document.getElementById('bfPhone').value.trim(),
-      route: document.getElementById('bfRoute').value.trim(),
-      notes: document.getElementById('bfNotes').value.trim()
+
+        name: document.getElementById('bfName').value.trim(),
+        phone: document.getElementById('bfPhone').value.trim(),
+
+        pickup: document.getElementById('bfPickup').value.trim(),
+        destination: document.getElementById('bfDestination').value.trim(),
+
+        seats: document.getElementById('bfSeats').value,
+
+        fare: document.getElementById('bfFare').value,
+
+        advance: document.getElementById('bfAdvance').value,
+
+        balance: document.getElementById('bfBalance').value,
+
+        payment: document.getElementById('bfPayment').value,
+
+        notes: document.getElementById('bfNotes').value.trim()
+
     };
+
     const okay = await writeRow('book', pendingCar, extra);
-    if(okay){
-      closeBookForm();
-      await loadData();
-      render();
+
+    if (okay) {
+
+        closeBookForm();
+        await loadData();
+        render();
+
     }
-  }
+
+}
 
   function exportCsv(){
-    if(!log.length){ alert('Nothing to export yet.'); return; }
-    const headers = ['Date','Car','Status','Name','Phone','Route','Notes','UpdatedAt'];
-    const rows = log.map(r => headers.map(h => {
-      const val = String(r[h.charAt(0).toLowerCase() + h.slice(1)] || '').replace(/"/g,'""');
-      return `"${val}"`;
-    }).join(','));
-    const csv = [headers.join(','), ...rows].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'cabsway-bookings-' + todayStr() + '.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
 
+    if(!log.length){
+        alert("Nothing to export yet.");
+        return;
+    }
+
+    const headers = [
+        "Date",
+        "Car",
+        "Status",
+        "Customer Name",
+        "Phone",
+        "Pickup",
+        "Destination",
+        "Seats",
+        "Fare",
+        "Advance",
+        "Balance",
+        "Payment",
+        "Notes",
+        "UpdatedAt"
+    ];
+
+    const rows = log.map(r => [
+
+        r.date,
+        r.car,
+        r.status,
+        r.name,
+        r.phone,
+        r.pickup,
+        r.destination,
+        r.seats,
+        r.fare,
+        r.advance,
+        r.balance,
+        r.payment,
+        r.notes,
+        r.updatedAt
+
+    ].map(v => `"${String(v || "").replace(/"/g,'""')}"`).join(","));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+
+    const blob = new Blob([csv], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "cabsway-bookings-" + todayStr() + ".csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
   // ---------- activity log ----------
   function renderLog(){
-    const list = document.getElementById('logList');
+
+    const list = document.getElementById("logList");
+
     if(!log.length){
-      list.innerHTML = '<div class="empty-note">Nothing marked yet — completed bookings will show up here.</div>';
-      return;
+
+        list.innerHTML =
+        '<div class="empty-note">Nothing marked yet — completed bookings will show up here.</div>';
+
+        return;
+
     }
+
     list.innerHTML = log.slice(0,20).map(item => `
-      <div class="log-item">
-        <div class="l-main"><b>${item.car}</b> — ${item.date} · ${item.status}${item.name ? ' · ' + item.name : ''}${item.route ? ' · ' + item.route : ''}</div>
-        <div class="l-date">${item.updatedAt ? new Date(item.updatedAt).toLocaleString() : ''}</div>
-      </div>
-    `).join('');
-  }
+
+<div class="log-item">
+
+<div class="l-main">
+
+<b>${item.car}</b>
+
+${item.date}
+
+<br>
+
+👤 ${item.name || "-"}
+
+<br>
+
+📞 ${item.phone || "-"}
+
+<br>
+
+📍 ${item.pickup || "-"} → ${item.destination || "-"}
+
+<br>
+
+💺 Seats : ${item.seats || "-"}
+
+<br>
+
+💰 Fare : ₹${item.fare || 0}
+
+<br>
+
+💵 Advance : ₹${item.advance || 0}
+
+<br>
+
+🧾 Balance : ₹${item.balance || 0}
+
+<br>
+
+💳 ${item.payment || "Pending"}
+
+<br>
+
+📝 ${item.notes || "-"}
+
+</div>
+
+<div class="l-date">
+
+${item.updatedAt ?
+new Date(item.updatedAt).toLocaleString() : ""}
+
+</div>
+
+</div>
+
+`).join("");
+
+}
