@@ -120,7 +120,15 @@
 
     }
 }
+function calculateBalance() {
 
+    const fare = Number(document.getElementById("bfFare").value) || 0;
+    const advance = Number(document.getElementById("bfAdvance").value) || 0;
+
+    document.getElementById("bfBalance").value =
+        Math.max(fare - advance, 0);
+
+}
   function lockAgain(){
     sessionStorage.removeItem(UNLOCK_KEY);
     document.getElementById('dashboard').style.display = 'none';
