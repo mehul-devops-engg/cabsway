@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cab'sWay — Bookings (Owner)</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!--
+  ============================= OWNER NOTES =============================
+  This page is NOT linked anywhere obvious on the main site (just a small
+  "Owner" link in the footer). Bookmark this page directly:
+      yourdomain.in/admin.html
+
+  HOW IT WORKS:
+  - Everything is saved in THIS browser only (localStorage), on THIS device.
+    If you open it on a different phone, it starts empty on that phone.
+  - There's a simple 4-digit PIN lock so a random visitor who finds the
+    link can't see your bookings. This is NOT real security (anyone who
+    reads this file's code can see the PIN) — it's just a casual lock.
+    Change ADMIN_PIN below to your own 4 digits before publishing.
+  =========================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --basalt: #211b18; --basalt-2: #2b2320;
+    --stone: #e7e1cc; --stone-2: #ddd6bd;
+    --ink: #241e1a; --paper: #f6f1e4;
+    --wine: #7c1f45; --wine-deep: #5a1733;
+    --marigold: #eaa421; --marigold-2: #f6c34f;
+    --asphalt: #4b443c; --line: rgba(36,30,26,0.18);
+    --green: #4d7c4a; --green-bg: rgba(77,124,74,0.1);
+    --red: #a63b2f; --red-bg: rgba(166,59,47,0.09);
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--stone); color:var(--ink); font-family:'Barlow',sans-serif; }
+  h1,h2,h3,.display{ font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:0.02em; font-weight:700; margin:0; }
+  .mono{ font-family:'IBM Plex Mono',monospace; }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 20px; }
+  button{ font-family:inherit; cursor:pointer; }
+  input, select, textarea{ font-family:inherit; }
+
+  /* lock screen */
+  #lockScreen{ min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--basalt); color:var(--paper); padding:20px; }
+  .lock-box{ text-align:center; max-width:280px; }
+  .lock-box h1{ font-size:1.6rem; margin-bottom:6px; }
+  .lock-box p{ font-size:0.85rem; color:rgba(246,241,228,0.6); margin-bottom:20px; }
+  #pinInput{ width:100%; text-align:center; font-size:1.4rem; letter-spacing:0.4em; padding:12px; border-radius:10px; border:1px solid rgba(246,241,228,0.3); background:rgba(246,241,228,0.08); color:var(--paper); }
+  #pinInput:focus{ outline:2px solid var(--marigold); }
+  #unlockBtn{ margin-top:14px; width:100%; padding:12px; border:none; border-radius:10px; background:var(--marigold); color:var(--basalt); font-weight:600; }
+  #pinError{ margin-top:10px; font-size:0.8rem; color:#e79b8f; display:none; }
+
+  /* dashboard */
+  #dashboard{ display:none; }
+  header{ background:var(--basalt); color:var(--paper); padding:18px 0; }
+  .header-inner{ display:flex; justify-content:space-between; align-items:center; }
+  .brand{ font-family:'Barlow Condensed'; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; font-size:1.2rem; }
+  .brand span{ color:var(--marigold); }
+  .lock-again{ background:none; border:1px solid rgba(246,241,228,0.3); color:var(--paper); border-radius:999px; padding:6px 14px; font-size:0.8rem; }
+
+  section{ padding:26px 0; }
+  .date-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .date-row input[type=date]{ padding:9px 12px; border-radius:8px; border:1px solid var(--line); background:#fff; font-size:0.95rem; }
+  .today-btn{ background:transparent; border:1px solid var(--wine); color:var(--wine); border-radius:999px; padding:8px 14px; font-size:0.85rem; font-weight:600; }
+  .summary{ font-family:'IBM Plex Mono'; font-size:0.9rem; color:var(--asphalt); margin-left:auto; }
+  .summary b{ color:var(--wine); }
+
+  .car-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:820px){ .car-grid{ grid-template-columns:repeat(2,1fr); } }
+  .car-tile{ background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:left; }
+  .car-tile .name{ font-family:'Barlow Condensed'; font-weight:700; text-transform:uppercase; font-size:1.02rem; }
+  .car-tile .status{ display:inline-block; margin-top:6px; font-size:0.72rem; font-weight:600; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:0.03em; }
+  .status.available{ background:var(--green-bg); color:var(--green); }
+  .status.booked{ background:var(--red-bg); color:var(--red); }
+  .car-tile .details{ margin-top:8px; font-size:0.8rem; color:rgba(36,30,26,0.65); line-height:1.4; }
+  .car-tile button{ margin-top:10px; width:100%; padding:8px; border-radius:8px; border:1px solid var(--line); background:#fff; font-size:0.82rem; font-weight:600; }
+  .car-tile.booked button{ border-color:var(--red); color:var(--red); }
+  .car-tile.available button{ border-color:var(--green); color:var(--green); }
+
+  /* booking form modal-ish inline panel */
+  #bookForm{ display:none; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:18px; margin-top:16px; }
+  #bookForm h3{ font-size:1.1rem; margin-bottom:12px; }
+  .field{ margin-bottom:12px; }
+  .field label{ display:block; font-size:0.76rem; font-weight:600; text-transform:uppercase; color:var(--asphalt); margin-bottom:5px; }
+  .field input, .field textarea{ width:100%; padding:9px 11px; border-radius:8px; border:1px solid var(--line); font-size:0.92rem; }
+  .form-btns{ display:flex; gap:10px; }
+  .form-btns button{ padding:10px 16px; border-radius:8px; border:none; font-weight:600; font-size:0.9rem; }
+  .btn-save{ background:var(--wine); color:var(--paper); }
+  .btn-cancel{ background:transparent; border:1px solid var(--line); }
+
+  .log-section h2{ font-size:1.3rem; margin-bottom:14px; }
+  .log-item{ background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:10px; font-size:0.88rem; display:flex; justify-content:space-between; gap:10px; }
+  .log-item .l-main b{ color:var(--wine); }
+  .log-item .l-date{ font-family:'IBM Plex Mono'; font-size:0.72rem; color:var(--asphalt); white-space:nowrap; }
+  .empty-note{ color:rgba(36,30,26,0.5); font-size:0.88rem; font-style:italic; }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-box">
+    <h1>Cab'sWay</h1>
+    <p>Owner area — enter your 4-digit PIN</p>
+    <input type="password" id="pinInput" inputmode="numeric" maxlength="4" placeholder="••••">
+    <button id="unlockBtn" onclick="tryUnlock()">Unlock</button>
+    <div id="pinError">Wrong PIN — try again.</div>
+  </div>
+</div>
+
+<div id="dashboard">
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand">Cab'sWay<span>.</span> — Bookings</div>
+      <button class="lock-again" onclick="lockAgain()">Lock</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section>
+      <div class="date-row">
+        <input type="date" id="dateInput">
+        <button class="today-btn" onclick="goToday()">Today</button>
+        <div class="summary" id="summaryText"></div>
+      </div>
+
+      <div class="car-grid" id="carGrid"></div>
+
+      <div id="bookForm">
+        <h3 id="bookFormTitle">Mark car as booked</h3>
+        <div class="field"><label for="bfName">Customer name</label><input id="bfName" type="text"></div>
+        <div class="field"><label for="bfPhone">Customer phone</label><input id="bfPhone" type="text"></div>
+        <div class="field"><label for="bfRoute">Route</label><input id="bfRoute" type="text" placeholder="e.g. Nashik → Pune"></div>
+        <div class="field"><label for="bfNotes">Notes (optional)</label><textarea id="bfNotes" rows="2"></textarea></div>
+        <div class="form-btns">
+          <button class="btn-save" onclick="saveBooking()">Save &amp; mark booked</button>
+          <button class="btn-cancel" onclick="closeBookForm()">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="log-section">
+      <h2>Recent activity</h2>
+      <button onclick="exportCsv()" style="margin-bottom:14px; padding:8px 16px; border-radius:8px; border:1px solid var(--line); background:var(--paper); font-weight:600; font-size:0.85rem; cursor:pointer;">⬇ Export as CSV</button>
+      <div id="logList"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // ============ EDIT THIS BEFORE PUBLISHING ============
+  const ADMIN_PIN = "2002"; // change to your own 4 digits
+  // =======================================================
+
+  const CARS = ["Swift","Ciaz","Aura","Ertiga","XL6","Innova","Innova Crysta","Kia Carens"];
+  const UNLOCK_KEY = "cabsway_admin_unlocked";
+
+  // ================= EDIT THESE TWO LINES =================
+  // Paste your Apps Script Web App URL here (ends in /exec). See setup steps.
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzSQCwytw93-CFNTWbsgh3QDW7paXy09ilKy6NZyThDkMYHsxj7etWeU95wCn7iFu1TiQ/exec";
+  // Must exactly match SECRET in your Apps Script code.
+  const SHEET_SECRET = "cabswayownerking";
+  // ===========================================================
+
+  // Loads data via a <script> tag instead of fetch() — this avoids the
+  // CORS block that Google Apps Script triggers when called from a real
+  // website with fetch. Visiting the URL directly in a browser still works
+  // exactly the same as before; this only changes how the page calls it.
+  function jsonpRequest(url){
+    return new Promise((resolve, reject)=>{
+      const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const script = document.createElement('script');
+      const cleanup = ()=>{ delete window[cbName]; script.remove(); };
+      window[cbName] = (data)=>{ cleanup(); resolve(data); };
+      script.onerror = ()=>{ cleanup(); reject(new Error('Request failed to load')); };
+      const sep = url.includes('?') ? '&' : '?';
+      script.src = url + sep + 'callback=' + cbName;
+      document.body.appendChild(script);
+      setTimeout(()=>{ if(window[cbName]){ cleanup(); reject(new Error('Request timed out')); } }, 10000);
+    });
+  }
+
+  function todayStr(){
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+
+  // in-memory cache of all rows fetched from the sheet: { "date|car": {status,name,phone,route,notes,updatedAt} }
+  let rowsByKey = {};
+  let log = [];
+
+  async function loadData(){
+    if(SHEET_API_URL.includes("PASTE_YOUR")){
+      showApiWarning();
+      return;
+    }
+    try{
+      const json = await jsonpRequest(SHEET_API_URL);
+      if(!json.ok) throw new Error(json.error || "unknown error");
+      rowsByKey = {};
+      log = [];
+      json.rows.forEach(r=>{
+        rowsByKey[r.date + "|" + r.car] = r;
+        log.push(r);
+      });
+      log.sort((a,b)=> (b.updatedAt||"").localeCompare(a.updatedAt||""));
+    }catch(err){
+      console.error("Failed to load bookings:", err);
+      document.getElementById('summaryText').textContent = "Couldn't load live data — check your internet connection or API URL.";
+    }
+  }
+
+  async function writeRow(action, car, extra){
+    if(SHEET_API_URL.includes("PASTE_YOUR")){ showApiWarning(); return false; }
+    try{
+      const params = new URLSearchParams(Object.assign({ secret: SHEET_SECRET, action, date: selectedDate, car }, extra || {}));
+      const json = await jsonpRequest(SHEET_API_URL + "?" + params.toString());
+      if(!json.ok) throw new Error(json.error || "unknown error");
+      return true;
+    }catch(err){
+      alert("Couldn't save — check your internet connection and try again.");
+      console.error(err);
+      return false;
+    }
+  }
+
+  function showApiWarning(){
+    document.getElementById('summaryText').innerHTML =
+      '⚠️ Live sync isn\'t set up yet — paste your Apps Script URL into SHEET_API_URL near the top of this file\'s &lt;script&gt;.';
+  }
+
+  let selectedDate = todayStr();
+  let pendingCar = null;
+
+  // ---------- lock screen ----------
+  function tryUnlock(){
+    const val = document.getElementById('pinInput').value;
+    if(val === ADMIN_PIN){
+      sessionStorage.setItem(UNLOCK_KEY, "1");
+      showDashboard();
+    } else {
+      document.getElementById('pinError').style.display = 'block';
+    }
+  }
+  document.getElementById('pinInput').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') tryUnlock();
+  });
+  function lockAgain(){
+    sessionStorage.removeItem(UNLOCK_KEY);
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('lockScreen').style.display = 'flex';
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinError').style.display = 'none';
+  }
+  async function showDashboard(){
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('dateInput').value = selectedDate;
+    document.getElementById('summaryText').textContent = 'Loading…';
+    await loadData();
+    render();
+  }
+  if(sessionStorage.getItem(UNLOCK_KEY) === "1"){ showDashboard(); }
+
+  // ---------- date handling ----------
+  document.getElementById('dateInput').addEventListener('change', async e=>{
+    selectedDate = e.target.value || todayStr();
+    closeBookForm();
+    document.getElementById('summaryText').textContent = 'Loading…';
+    await loadData();
+    render();
+  });
+  async function goToday(){
+    selectedDate = todayStr();
+    document.getElementById('dateInput').value = selectedDate;
+    closeBookForm();
+    await loadData();
+    render();
+  }
+
+  // ---------- rendering ----------
+  function render(){
+    const grid = document.getElementById('carGrid');
+    grid.innerHTML = '';
+    let freeCount = 0;
+
+    CARS.forEach(car=>{
+      const info = rowsByKey[selectedDate + "|" + car];
+      const isBooked = info && info.status === 'booked';
+      if(!isBooked) freeCount++;
+
+      const tile = document.createElement('div');
+      tile.className = 'car-tile ' + (isBooked ? 'booked' : 'available');
+
+      let detailsHtml = '';
+      if(isBooked){
+        detailsHtml = `<div class="details">${info.name ? info.name : 'No name'}${info.phone ? ' · ' + info.phone : ''}${info.route ? '<br>' + info.route : ''}${info.notes ? '<br>' + info.notes : ''}</div>`;
+      }
+
+      tile.innerHTML = `
+        <div class="name">${car}</div>
+        <span class="status ${isBooked ? 'booked':'available'}">${isBooked ? 'Booked' : 'Available'}</span>
+        ${detailsHtml}
+        <button onclick="onTileClick('${car.replace(/'/g,"\\'")}')">${isBooked ? 'Free up this car' : 'Mark as booked'}</button>
+      `;
+      grid.appendChild(tile);
+    });
+
+    document.getElementById('summaryText').innerHTML = `<b>${freeCount}</b> of ${CARS.length} cars free on ${selectedDate}`;
+    renderLog();
+  }
+
+  async function onTileClick(car){
+    const info = rowsByKey[selectedDate + "|" + car];
+    if(info && info.status === 'booked'){
+      if(confirm(car + ' will be marked available again on ' + selectedDate + '. Continue?')){
+        const okay = await writeRow('free', car);
+        if(okay){ await loadData(); render(); }
+      }
+    } else {
+      openBookForm(car);
+    }
+  }
+
+  // ---------- book form ----------
+  function openBookForm(car){
+    pendingCar = car;
+    document.getElementById('bookFormTitle').textContent = 'Mark ' + car + ' as booked — ' + selectedDate;
+    document.getElementById('bfName').value = '';
+    document.getElementById('bfPhone').value = '';
+    document.getElementById('bfRoute').value = '';
+    document.getElementById('bfNotes').value = '';
+    document.getElementById('bookForm').style.display = 'block';
+    document.getElementById('bookForm').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function closeBookForm(){
+    pendingCar = null;
+    document.getElementById('bookForm').style.display = 'none';
+  }
+  async function saveBooking(){
+    if(!pendingCar) return;
+    const extra = {
+      name: document.getElementById('bfName').value.trim(),
+      phone: document.getElementById('bfPhone').value.trim(),
+      route: document.getElementById('bfRoute').value.trim(),
+      notes: document.getElementById('bfNotes').value.trim()
+    };
+    const okay = await writeRow('book', pendingCar, extra);
+    if(okay){
+      closeBookForm();
+      await loadData();
+      render();
+    }
+  }
+
+  function exportCsv(){
+    if(!log.length){ alert('Nothing to export yet.'); return; }
+    const headers = ['Date','Car','Status','Name','Phone','Route','Notes','UpdatedAt'];
+    const rows = log.map(r => headers.map(h => {
+      const val = String(r[h.charAt(0).toLowerCase() + h.slice(1)] || '').replace(/"/g,'""');
+      return `"${val}"`;
+    }).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cabsway-bookings-' + todayStr() + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- activity log ----------
+  function renderLog(){
+    const list = document.getElementById('logList');
+    if(!log.length){
+      list.innerHTML = '<div class="empty-note">Nothing marked yet — completed bookings will show up here.</div>';
+      return;
+    }
+    list.innerHTML = log.slice(0,20).map(item => `
+      <div class="log-item">
+        <div class="l-main"><b>${item.car}</b> — ${item.date} · ${item.status}${item.name ? ' · ' + item.name : ''}${item.route ? ' · ' + item.route : ''}</div>
+        <div class="l-date">${item.updatedAt ? new Date(item.updatedAt).toLocaleString() : ''}</div>
+      </div>
+    `).join('');
+  }
+</script>
+
+</body>
+</html>
