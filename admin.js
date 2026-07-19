@@ -212,9 +212,15 @@ document.getElementById("loginError").style.display="none";
     pendingCar = car;
     document.getElementById('bookFormTitle').textContent = 'Mark ' + car + ' as booked — ' + selectedDate;
     document.getElementById('bfName').value = '';
-    document.getElementById('bfPhone').value = '';
-    document.getElementById('bfRoute').value = '';
-    document.getElementById('bfNotes').value = '';
+document.getElementById('bfPhone').value = '';
+document.getElementById('bfPickup').value = '';
+document.getElementById('bfDestination').value = '';
+document.getElementById('bfSeats').value = 1;
+document.getElementById('bfFare').value = '';
+document.getElementById('bfAdvance').value = 0;
+document.getElementById('bfBalance').value = '';
+document.getElementById('bfPayment').value = 'Pending';
+document.getElementById('bfNotes').value = '';
     document.getElementById('bookForm').style.display = 'block';
     document.getElementById('bookForm').scrollIntoView({behavior:'smooth', block:'center'});
   }
