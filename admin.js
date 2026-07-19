@@ -121,21 +121,6 @@
     }
 }
 
-  if (
-      username === ADMIN_USERNAME &&
-      password === ADMIN_PASSWORD
-  ) {
-
-      sessionStorage.setItem(UNLOCK_KEY, "1");
-      showDashboard();
-
-  } else {
-
-      document.getElementById("loginError").style.display = "block";
-
-  }
-
-}
   function lockAgain(){
     sessionStorage.removeItem(UNLOCK_KEY);
     document.getElementById('dashboard').style.display = 'none';
