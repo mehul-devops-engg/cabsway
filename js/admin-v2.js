@@ -213,6 +213,10 @@ minute:"2-digit"
     <button class="edit-btn" onclick='editTrip(${JSON.stringify(trip)})'>
         Edit
     </button>
+
+    <button class="delete-btn" onclick="deleteTrip('${trip.tripId}')">
+        Delete
+    </button>
 </td>
             </tr>`;
         });
@@ -333,4 +337,11 @@ function editTrip(trip) {
 
     document.getElementById("saveTripBtn").textContent = "Update Trip";
     tripModal.style.display = "flex";
+}
+function deleteTrip(tripId) {
+
+    if (!confirm("Delete this trip?")) return;
+
+    alert("Delete Trip: " + tripId);
+
 }
