@@ -224,6 +224,38 @@ minute:"2-digit"
     });
 
 }
+
+function loadBookingTrips() {
+
+    jsonp(SCRIPT_URL + "?action=listTrips", function(res){
+
+        if(!res.ok) return;
+
+        const tripSelect = document.getElementById("bookingTrip");
+
+        tripSelect.innerHTML =
+            '<option value="">Select Trip</option>';
+
+        res.trips.forEach(function(trip){
+
+            if(Number(trip.available) <= 0) return;
+
+            tripSelect.innerHTML += `
+                <option
+                    value="${trip.tripId}"
+                    data-date="${trip.date}"
+                    data-car="${trip.vehicle}"
+                    data-pickup="${trip.pickup}"
+                    data-destination="${trip.destination}"
+                    data-available="${trip.available}">
+                    ${trip.tripId} | ${trip.route} | ${trip.vehicle} | ${trip.available} Seats
+                </option>`;
+        });
+
+    });
+
+}
+
 window.addEventListener("load", loadDashboard);
 
 function loadDashboard() {
@@ -365,11 +397,30 @@ function deleteTrip(tripId) {
     });
 
 }
-document.getElementById("addBookingBtn").addEventListener("click", function () {
 
-    document.getElementById("bookingModal").style.display = "block";
+document.getElementById("bookingTrip").addEventListener("change", function () {
+
+    const option = this.options[this.selectedIndex];
+
+    if (!option.value) return;
+
+    document.getElementById("bookingDate").value =
+        option.dataset.date.split("T")[0];
+
+    document.getElementById("bookingCar").value =
+        option.dataset.car;
+
+    document.getElementById("bookingPickup").value =
+        option.dataset.pickup;
+
+    document.getElementById("bookingDestination").value =
+        option.dataset.destination;
+
+    document.getElementById("bookingAvailable").value =
+        option.dataset.available;
 
 });
+
 function closeBookingModal() {
 
     document.getElementById("bookingModal").style.display = "none";
