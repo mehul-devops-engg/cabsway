@@ -18,20 +18,19 @@
 
     <ul>
 
-        <li class="active">🏠 Dashboard</li>
+        <li class="menu-item active" data-page="dashboardPage">🏠 Dashboard</li>
 
-        <li>🚖 Trips</li>
+<li class="menu-item" data-page="tripsPage">🚖 Trips</li>
 
-        <li>🎫 Bookings</li>
+<li class="menu-item" data-page="bookingsPage">🎫 Bookings</li>
 
-        <li>👥 Customers</li>
+<li class="menu-item" data-page="customersPage">👥 Customers</li>
 
-        <li>🚗 Fleet</li>
+<li class="menu-item" data-page="fleetPage">🚗 Fleet</li>
 
-        <li>📊 Reports</li>
+<li class="menu-item" data-page="reportsPage">📊 Reports</li>
 
-        <li>⚙ Settings</li>
-
+<li class="menu-item" data-page="settingsPage">⚙ Settings</li>
         <li>🚪 Logout</li>
 
     </ul>
@@ -41,7 +40,118 @@
 <div class="main">
 
 <header>
+<!-- Dashboard -->
+<section id="dashboardPage" class="page active-page">
 
+    <h2 class="title">Today's Trips</h2>
+
+    <div id="tripContainer">
+
+        <div class="trip-card">
+
+            <h3>🚑 No Trips Yet</h3>
+
+            <p>Create your first trip.</p>
+
+            <button>Add Trip</button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Trips -->
+<section id="tripsPage" class="page">
+
+    <div class="page-header">
+        <h2>Trips</h2>
+        <button id="addTripBtn" class="primary-btn">+ New Trip</button>
+    </div>
+
+    <div class="table-container">
+
+        <table class="trip-table">
+
+            <thead>
+
+                <tr>
+                    <th>Trip ID</th>
+                    <th>Date</th>
+                    <th>Route</th>
+                    <th>Departure</th>
+                    <th>Vehicle</th>
+                    <th>Driver</th>
+                    <th>Capacity</th>
+                    <th>Booked</th>
+                    <th>Available</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="tripTableBody">
+
+                <tr>
+
+                    <td colspan="10" style="text-align:center;padding:30px;">
+                        No trips available
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!-- Bookings -->
+<section id="bookingsPage" class="page">
+
+    <h2>Bookings</h2>
+
+    <p>Bookings page coming soon...</p>
+
+</section>
+
+<!-- Customers -->
+<section id="customersPage" class="page">
+
+    <h2>Customers</h2>
+
+    <p>Customers page coming soon...</p>
+
+</section>
+
+<!-- Fleet -->
+<section id="fleetPage" class="page">
+
+    <h2>Fleet</h2>
+
+    <p>Fleet page coming soon...</p>
+
+</section>
+
+<!-- Reports -->
+<section id="reportsPage" class="page">
+
+    <h2>Reports</h2>
+
+    <p>Reports page coming soon...</p>
+
+</section>
+
+<!-- Settings -->
+<section id="settingsPage" class="page">
+
+    <h2>Settings</h2>
+
+    <p>Settings page coming soon...</p>
+
+</section>
 <h2>Dashboard</h2>
 
 <div class="admin">
@@ -110,8 +220,53 @@ Today's Trips
 
 </div>
 
-<script src="js/admin-v2.js"></script>
 
+<!-- New Trip Modal -->
+<div id="tripModal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Create New Trip</h2>
+            <span id="closeTripModal" class="close">&times;</span>
+        </div>
+
+        <div class="modal-body">
+
+            <label>Date</label>
+            <input type="date" id="tripDate">
+
+            <label>Pickup</label>
+            <input type="text" id="tripPickup" placeholder="Pickup Location">
+
+            <label>Destination</label>
+            <input type="text" id="tripDestination" placeholder="Destination">
+
+            <label>Departure Time</label>
+            <input type="time" id="tripDeparture">
+
+            <label>Vehicle</label>
+            <select id="tripVehicle">
+                <option value="">Select Vehicle</option>
+            </select>
+
+            <label>Driver</label>
+            <input type="text" id="tripDriver" placeholder="Driver Name">
+
+            <label>Capacity</label>
+            <input type="number" id="tripCapacity" readonly>
+
+        </div>
+
+        <div class="modal-footer">
+            <button id="cancelTripBtn">Cancel</button>
+            <button id="saveTripBtn" class="primary-btn">Save Trip</button>
+        </div>
+
+    </div>
+
+</div>
+<script src="js/admin-v2.js"></script>
 </body>
 
 </html>
