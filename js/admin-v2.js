@@ -1,5 +1,6 @@
 // Your Google Apps Script Web App URL
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSQCwytw93-CFNTWbsgh3QDW7paXy09ilKy6NZyThDkMYHsxj7etWeU95wCn7iFu1TiQ/exec";
+let editingTripId = null;
 const menuItems = document.querySelectorAll(".menu-item");
 const pages = document.querySelectorAll(".page");
 
@@ -312,6 +313,7 @@ function loadBookings() {
 
 }
 function editTrip(trip) {
+    editingTripId = trip.tripId;
 
     document.getElementById("tripDate").value =
     new Date(trip.date).toISOString().split("T")[0];
@@ -323,5 +325,6 @@ function editTrip(trip) {
     document.getElementById("tripDriver").value = trip.driver;
     document.getElementById("tripCapacity").value = trip.capacity;
 
+    document.getElementById("saveTripBtn").textContent = "Update Trip";
     tripModal.style.display = "flex";
 }
