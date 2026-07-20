@@ -202,6 +202,11 @@ minute:"2-digit"
                 <td>${trip.booked}</td>
                 <td>${trip.available}</td>
                 <td>${trip.status}</td>
+<td>
+    <button class="edit-btn" onclick="editTrip('${trip.tripId}')">
+        Edit
+    </button>
+</td>
             </tr>`;
         });
 
@@ -305,4 +310,7 @@ function loadBookings() {
 
     });
 
+}
+function editTrip(tripId) {
+    alert("Edit Trip: " + tripId);
 }
