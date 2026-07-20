@@ -297,13 +297,11 @@ function loadDashboard() {
                 </div>
 
                 <div class="trip-info">
-                    <div>🕒 ${trip.departure}</div>
-                    <div>🚗 ${trip.vehicle || trip.carId || "-"}</div>data-car="${trip.vehicle || trip.carId}"
-
-${trip.tripId} | ${trip.route} | ${trip.vehicle || trip.carId} | ${trip.available} Seats
-                    <div>👤 ${trip.driver}</div>
-                    <div>💺 ${trip.booked}/${trip.capacity}</div>
-                </div>
+    <div>🕒 ${trip.departure}</div>
+    <div>🚗 ${trip.vehicle}</div>
+    <div>👤 ${trip.driver}</div>
+    <div>💺 ${trip.booked}/${trip.capacity}</div>
+</div>
 
             </div>`;
         });
