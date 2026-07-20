@@ -502,3 +502,11 @@ function saveBooking() {
     });
 
 }
+
+document.getElementById("addBookingBtn").addEventListener("click", function () {
+
+    loadBookingTrips();
+
+    document.getElementById("bookingModal").style.display = "flex";
+
+});
