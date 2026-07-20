@@ -449,10 +449,56 @@ window.onclick = function(event) {
     }
 
 };
-document.getElementById("addBookingBtn").addEventListener("click", function () {
 
-    loadBookingTrips();
+document.getElementById("saveBookingBtn").addEventListener("click", saveBooking);
+function calculateBalance() {
 
-    document.getElementById("bookingModal").style.display = "block";
+    const fare = Number(document.getElementById("bookingFare").value) || 0;
+    const advance = Number(document.getElementById("bookingAdvance").value) || 0;
 
-});
+    document.getElementById("bookingBalance").value = fare - advance;
+}
+
+document.getElementById("bookingFare").addEventListener("input", calculateBalance);
+document.getElementById("bookingAdvance").addEventListener("input", calculateBalance);
+
+function saveBooking() {
+
+    const url =
+        SCRIPT_URL +
+        "?action=createBooking" +
+        "&tripId=" + encodeURIComponent(document.getElementById("bookingTrip").value) +
+        "&date=" + encodeURIComponent(document.getElementById("bookingDate").value) +
+        "&car=" + encodeURIComponent(document.getElementById("bookingCar").value) +
+        "&pickup=" + encodeURIComponent(document.getElementById("bookingPickup").value) +
+        "&destination=" + encodeURIComponent(document.getElementById("bookingDestination").value) +
+        "&name=" + encodeURIComponent(document.getElementById("customerName").value) +
+        "&phone=" + encodeURIComponent(document.getElementById("customerPhone").value) +
+        "&seats=" + encodeURIComponent(document.getElementById("bookingSeats").value) +
+        "&fare=" + encodeURIComponent(document.getElementById("bookingFare").value) +
+        "&advance=" + encodeURIComponent(document.getElementById("bookingAdvance").value) +
+        "&balance=" + encodeURIComponent(document.getElementById("bookingBalance").value) +
+        "&payment=" + encodeURIComponent(document.getElementById("bookingPayment").value) +
+        "&notes=" + encodeURIComponent(document.getElementById("bookingNotes").value);
+
+    jsonp(url, function(res){
+
+        if(res.ok){
+
+            alert("Booking Saved Successfully!");
+
+            closeBookingModal();
+
+            loadBookings();
+            loadTrips();
+            loadDashboard();
+
+        } else {
+
+            alert(res.error || "Failed to save booking.");
+
+        }
+
+    });
+
+}
