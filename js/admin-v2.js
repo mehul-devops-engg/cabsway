@@ -205,14 +205,7 @@ function loadTrips() {
         : "-"
 }</td>
                 <td>${trip.route}</td>
-                <td>${
-    trip.departure
-        ? new Date("1970-01-01T" + trip.departure).toLocaleTimeString("en-IN", {
-              hour: "2-digit",
-              minute: "2-digit"
-          })
-        : "-"
-}</td>
+                <td>${trip.departure || "-"}</td>
                 <td>${trip.vehicle}</td>
                 <td>${trip.driver}</td>
                 <td>${trip.capacity}</td>
