@@ -110,15 +110,17 @@ document.getElementById("saveTripBtn").textContent = "Save Trip";
 }
 function jsonp(url, callback) {
 
-    const callbackName = "cb_" + Date.now();
+    const callbackName =
+    "cb_" + Date.now() + "_" + Math.floor(Math.random() * 1000000);
 
     window[callbackName] = function (data) {
 
         callback(data);
 
-        delete window[callbackName];
-
-        document.body.removeChild(script);
+        setTimeout(() => {
+    delete window[callbackName];
+    script.remove();
+}, 0);
 
     };
 
