@@ -185,9 +185,12 @@ function loadTrips() {
             tbody.innerHTML += `
             <tr>
                 <td>${trip.tripId}</td>
-                <td>${trip.date}</td>
+                <td>${new Date(trip.date).toLocaleDateString("en-GB")}</td>
                 <td>${trip.route}</td>
-                <td>${trip.departure}</td>
+                <td>${new Date(trip.departure).toLocaleTimeString("en-IN",{
+hour:"2-digit",
+minute:"2-digit"
+})}</td>
                 <td>${trip.vehicle}</td>
                 <td>${trip.driver}</td>
                 <td>${trip.capacity}</td>
