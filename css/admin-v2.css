@@ -282,3 +282,49 @@ header h2{
 #dashboardPage .card{
     width:100%;
 }
+.dashboard-trip-list{
+    display:grid;
+    gap:18px;
+    margin-top:20px;
+}
+
+.dashboard-trip{
+    background:#fff;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.dashboard-trip-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.trip-status{
+    background:#22c55e;
+    color:#fff;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.trip-route{
+    font-size:22px;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+.trip-info{
+    display:flex;
+    gap:25px;
+    flex-wrap:wrap;
+    color:#666;
+}
+
+.loading-card{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+}
