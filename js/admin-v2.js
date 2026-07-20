@@ -117,3 +117,41 @@ function jsonp(url, callback) {
     document.body.appendChild(script);
 
 }
+window.addEventListener("load", loadFleet);
+
+function loadFleet() {
+
+    jsonp(SCRIPT_URL + "?action=fleet", function(res){
+
+        if(!res.ok){
+            alert("Unable to load fleet.");
+            return;
+        }
+
+        const vehicle = document.getElementById("tripVehicle");
+
+        vehicle.innerHTML = '<option value="">Select Vehicle</option>';
+
+        res.fleet.forEach(function(car){
+
+            const option = document.createElement("option");
+
+            option.value = car.vehicle;
+            option.textContent = car.vehicle;
+            option.dataset.capacity = car.capacity;
+
+            vehicle.appendChild(option);
+
+        });
+
+    });
+
+}
+document.getElementById("tripVehicle").addEventListener("change", function(){
+
+    const option = this.options[this.selectedIndex];
+
+    document.getElementById("tripCapacity").value =
+        option.dataset.capacity || "";
+
+});
