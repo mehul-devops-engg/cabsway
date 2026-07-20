@@ -331,7 +331,7 @@ console.log("Trips received:", res.trips);
 
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8" style="text-align:center;padding:30px;">
+                    <td colspan="9" style="text-align:center;padding:30px;">
                         No bookings found
                     </td>
                 </tr>
@@ -352,6 +352,12 @@ console.log("Trips received:", res.trips);
                     <td>${row.seats}</td>
                     <td>₹${row.fare}</td>
                     <td>${row.status}</td>
+
+<td>
+    <button class="edit-btn" onclick="editBooking('${row.bookingId}')">
+        Edit
+    </button>
+</td>
                 </tr>
             `;
         });
