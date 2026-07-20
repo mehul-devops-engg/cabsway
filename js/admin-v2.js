@@ -478,7 +478,6 @@ const url =
     "?action=" + action +
     "&bookingId=" + encodeURIComponent(editingBookingId || "") +
     "&tripId=" + encodeURIComponent(document.getElementById("bookingTrip").value) +
-        "&tripId=" + encodeURIComponent(document.getElementById("bookingTrip").value) +
         "&date=" + encodeURIComponent(document.getElementById("bookingDate").value) +
         "&car=" + encodeURIComponent(document.getElementById("bookingCar").value) +
         "&pickup=" + encodeURIComponent(document.getElementById("bookingPickup").value) +
@@ -496,8 +495,18 @@ const url =
 
         if(res.ok){
 
-            alert("Booking Saved Successfully!");
-            document.getElementById("customerName").value = "";
+            alert(
+    editingBookingId
+        ? "Booking Updated Successfully!"
+        : "Booking Saved Successfully!"
+);
+
+editingBookingId = null;
+
+document.getElementById("saveBookingBtn").textContent =
+"Save Booking";
+
+document.getElementById("customerName").value = "";
 document.getElementById("customerPhone").value = "";
 document.getElementById("bookingSeats").value = "";
 document.getElementById("bookingFare").value = "";
@@ -505,11 +514,11 @@ document.getElementById("bookingAdvance").value = "0";
 document.getElementById("bookingBalance").value = "";
 document.getElementById("bookingNotes").value = "";
 
-            closeBookingModal();
+closeBookingModal();
 
-            loadBookings();
-            loadTrips();
-            loadDashboard();
+loadBookings();
+loadTrips();
+loadDashboard();
 
         } else {
 
@@ -544,8 +553,73 @@ document.getElementById("addBookingBtn").addEventListener("click", function () {
     document.getElementById("bookingModal").style.display = "flex";
 
 });
-function editBooking(bookingId){
+function editBooking(bookingId) {
 
-    alert("Editing Booking : " + bookingId);
+    jsonp(SCRIPT_URL + "?action=list", function (res) {
+
+        if (!res.ok) {
+            alert("Unable to load booking.");
+            return;
+        }
+
+        const booking = res.rows.find(r => r.bookingId === bookingId);
+
+        if (!booking) {
+            alert("Booking not found.");
+            return;
+        }
+
+        editingBookingId = booking.bookingId;
+
+        loadBookingTrips();
+
+        setTimeout(function () {
+
+            document.getElementById("bookingTrip").value = booking.tripId;
+            document.getElementById("bookingDate").value =
+                booking.date.split("T")[0];
+
+            document.getElementById("bookingCar").value =
+                booking.car;
+
+            document.getElementById("bookingPickup").value =
+                booking.pickup;
+
+            document.getElementById("bookingDestination").value =
+                booking.destination;
+
+            document.getElementById("customerName").value =
+                booking.name;
+
+            document.getElementById("customerPhone").value =
+                booking.phone;
+
+            document.getElementById("bookingSeats").value =
+                booking.seats;
+
+            document.getElementById("bookingFare").value =
+                booking.fare;
+
+            document.getElementById("bookingAdvance").value =
+                booking.advance;
+
+            document.getElementById("bookingBalance").value =
+                booking.balance;
+
+            document.getElementById("bookingPayment").value =
+                booking.payment;
+
+            document.getElementById("bookingNotes").value =
+                booking.notes;
+
+            document.getElementById("saveBookingBtn").textContent =
+                "Update Booking";
+
+            document.getElementById("bookingModal").style.display =
+                "flex";
+
+        }, 300);
+
+    });
 
 }
