@@ -346,7 +346,7 @@ console.log("Trips received:", res.trips);
             tbody.innerHTML += `
                 <tr>
                     <td>${row.bookingId}</td>
-                    <td>${row.date}</td>
+                    <td>${new Date(row.date).toLocaleDateString("en-GB")}</td>
                     <td>${row.name}</td>
                     <td>${row.phone}</td>
                     <td>${row.car}</td>
