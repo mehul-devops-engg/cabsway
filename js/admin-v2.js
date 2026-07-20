@@ -346,7 +346,7 @@ console.log("Trips received:", res.trips);
             tbody.innerHTML += `
                 <tr>
                     <td>${row.bookingId}</td>
-                    <td>${new Date(row.date).toLocaleDateString("en-GB")}</td>
+                    <td>${row.date}</td>
                     <td>${row.name}</td>
                     <td>${row.phone}</td>
                     <td>${row.car}</td>
@@ -544,3 +544,8 @@ document.getElementById("addBookingBtn").addEventListener("click", function () {
     document.getElementById("bookingModal").style.display = "flex";
 
 });
+function editBooking(bookingId){
+
+    alert("Editing Booking : " + bookingId);
+
+}
