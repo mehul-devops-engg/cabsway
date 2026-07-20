@@ -355,8 +355,14 @@ console.log("Trips received:", res.trips);
                     <td>${row.status}</td>
 
 <td>
-    <button class="edit-btn" onclick="editBooking('${row.bookingId}')">
+    <button class="edit-btn"
+        onclick="editBooking('${row.bookingId}')">
         Edit
+    </button>
+
+    <button class="delete-btn"
+        onclick="cancelBooking('${row.bookingId}')">
+        Cancel
     </button>
 </td>
                 </tr>
@@ -624,5 +630,36 @@ function editBooking(bookingId) {
         }, 300);
 
     });
+
+}
+function cancelBooking(bookingId) {
+
+    if (!confirm("Are you sure you want to cancel this booking?")) {
+        return;
+    }
+
+    jsonp(
+        SCRIPT_URL +
+        "?action=deleteBooking" +
+        "&bookingId=" + encodeURIComponent(bookingId),
+
+        function (res) {
+
+            if (res.ok) {
+
+                alert("Booking cancelled successfully!");
+
+                loadBookings();
+                loadTrips();
+                loadDashboard();
+
+            } else {
+
+                alert(res.error || "Unable to cancel booking.");
+
+            }
+
+        }
+    );
 
 }
