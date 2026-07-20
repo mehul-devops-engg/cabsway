@@ -342,6 +342,26 @@ function deleteTrip(tripId) {
 
     if (!confirm("Delete this trip?")) return;
 
-    alert("Delete Trip: " + tripId);
+    const url =
+        SCRIPT_URL +
+        "?action=deleteTrip" +
+        "&tripId=" + encodeURIComponent(tripId);
+
+    jsonp(url, function(res){
+
+        if(res.ok){
+
+            alert("Trip deleted successfully!");
+
+            loadTrips();
+            loadDashboard();
+
+        }else{
+
+            alert(res.error || "Failed to delete trip.");
+
+        }
+
+    });
 
 }
