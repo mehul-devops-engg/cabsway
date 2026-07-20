@@ -309,7 +309,16 @@ function loadDashboard() {
         document.getElementById("todayBookings").textContent = booked;
         document.getElementById("todaySeats").textContent = available;
 
-        document.getElementById("todayRevenue").textContent = "₹0";
+        jsonp(SCRIPT_URL + "?action=getDashboard", function(res){
+
+    if(res.ok){
+
+        document.getElementById("todayRevenue").textContent =
+            "₹" + res.revenue;
+
+    }
+
+});
 
     });
 
@@ -468,11 +477,31 @@ function calculateBalance() {
     const fare = Number(document.getElementById("bookingFare").value) || 0;
     const advance = Number(document.getElementById("bookingAdvance").value) || 0;
 
-    document.getElementById("bookingBalance").value = fare - advance;
-}
+    let balance = fare - advance;
 
-document.getElementById("bookingFare").addEventListener("input", calculateBalance);
-document.getElementById("bookingAdvance").addEventListener("input", calculateBalance);
+    if (balance < 0) balance = 0;
+
+    document.getElementById("bookingBalance").value = balance;
+
+    let payment = "Pending";
+
+    if (advance <= 0) {
+
+        payment = "Pending";
+
+    } else if (advance >= fare && fare > 0) {
+
+        payment = "Paid";
+
+    } else {
+
+        payment = "Partial";
+
+    }
+
+    document.getElementById("bookingPayment").value = payment;
+
+}
 
 function saveBooking() {
 
