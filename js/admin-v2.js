@@ -326,6 +326,8 @@ function loadBookings() {
 
         if(!res.ok) return;
 
+console.log("Trips received:", res.trips);
+
         const tbody = document.getElementById("bookingTableBody");
 
         tbody.innerHTML = "";
