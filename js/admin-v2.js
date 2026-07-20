@@ -78,14 +78,19 @@ function saveTrip() {
         "&vehicle=" + encodeURIComponent(vehicle) +
         "&driver=" + encodeURIComponent(driver) +
         "&capacity=" + encodeURIComponent(capacity);
+    
 
     jsonp(url, function (res) {
 
-        if (res.ok) {
+       if (res.ok) {
 
-            alert("Trip Created Successfully!");
+    alert("Trip Created Successfully!");
 
-            tripModal.style.display = "none";
+    closeTripModal();
+
+    loadTrips();
+
+
 
         } else {
 
@@ -121,33 +126,29 @@ window.addEventListener("load", loadFleet);
 
 function loadFleet() {
 
-    jsonp(SCRIPT_URL + "?action=fleet", function(res){
+    const url = SCRIPT_URL + "?action=fleet";
 
-        if(!res.ok){
-            alert("Unable to load fleet.");
-            return;
-        }
+    jsonp(url, function(res) {
+
+        if (!res.ok) return;
 
         const vehicle = document.getElementById("tripVehicle");
 
         vehicle.innerHTML = '<option value="">Select Vehicle</option>';
 
-        res.fleet.forEach(function(car){
+        res.fleet.forEach(car => {
 
-            const option = document.createElement("option");
-
-            option.value = car.vehicle;
-            option.textContent = car.vehicle;
-            option.dataset.capacity = car.capacity;
-
-            vehicle.appendChild(option);
+            vehicle.innerHTML +=
+                `<option value="${car.vehicle}" data-capacity="${car.capacity}">
+                    ${car.vehicle}
+                </option>`;
 
         });
 
     });
 
 }
-document.getElementById("tripVehicle").addEventListener("change", function(){
+document.getElementById("tripVehicle").addEventListener("change", function () {
 
     const option = this.options[this.selectedIndex];
 
@@ -155,3 +156,47 @@ document.getElementById("tripVehicle").addEventListener("change", function(){
         option.dataset.capacity || "";
 
 });
+window.addEventListener("load", loadTrips);
+
+function loadTrips() {
+
+    jsonp(SCRIPT_URL + "?action=listTrips", function(res){
+
+        if(!res.ok) return;
+
+        const tbody = document.getElementById("tripTableBody");
+
+        tbody.innerHTML = "";
+
+        if(res.trips.length === 0){
+
+            tbody.innerHTML =
+            `<tr>
+                <td colspan="10" style="text-align:center;">
+                    No trips available
+                </td>
+            </tr>`;
+
+            return;
+        }
+
+        res.trips.forEach(function(trip){
+
+            tbody.innerHTML += `
+            <tr>
+                <td>${trip.tripId}</td>
+                <td>${trip.date}</td>
+                <td>${trip.route}</td>
+                <td>${trip.departure}</td>
+                <td>${trip.vehicle}</td>
+                <td>${trip.driver}</td>
+                <td>${trip.capacity}</td>
+                <td>${trip.booked}</td>
+                <td>${trip.available}</td>
+                <td>${trip.status}</td>
+            </tr>`;
+        });
+
+    });
+
+}
