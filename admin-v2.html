@@ -133,9 +133,45 @@
 <!-- Bookings -->
 <section id="bookingsPage" class="page">
 
-    <h2>Bookings</h2>
+    <div class="page-header">
+        <h2>Bookings</h2>
+        <button id="addBookingBtn" class="primary-btn">
+            + New Booking
+        </button>
+    </div>
 
-    <p>Bookings page coming soon...</p>
+    <div class="table-container">
+
+        <table class="trip-table">
+
+            <thead>
+
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Car</th>
+                    <th>Seats</th>
+                    <th>Fare</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="bookingTableBody">
+
+                <tr>
+                    <td colspan="8" style="text-align:center;padding:30px;">
+                        Loading bookings...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </section>
 
