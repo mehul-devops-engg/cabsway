@@ -207,7 +207,7 @@ function loadTrips() {
 }</td>
                 <td>${trip.route}</td>
                 <td>${trip.departure || "-"}</td>
-                <td>${trip.vehicle}</td>
+                <td>${trip.vehicle || trip.carId || "-"}</td>
                 <td>${trip.driver}</td>
                 <td>${trip.capacity}</td>
                 <td>${trip.booked}</td>
@@ -298,7 +298,9 @@ function loadDashboard() {
 
                 <div class="trip-info">
                     <div>🕒 ${trip.departure}</div>
-                    <div>🚗 ${trip.vehicle}</div>
+                    <div>🚗 ${trip.vehicle || trip.carId || "-"}</div>data-car="${trip.vehicle || trip.carId}"
+
+${trip.tripId} | ${trip.route} | ${trip.vehicle || trip.carId} | ${trip.available} Seats
                     <div>👤 ${trip.driver}</div>
                     <div>💺 ${trip.booked}/${trip.capacity}</div>
                 </div>
@@ -379,9 +381,8 @@ function editTrip(trip) {
     new Date(trip.date).toISOString().split("T")[0];
     document.getElementById("tripPickup").value = trip.pickup;
     document.getElementById("tripDestination").value = trip.destination;
-    document.getElementById("tripDeparture").value =
-    new Date(trip.departure).toTimeString().slice(0, 5);
-    document.getElementById("tripVehicle").value = trip.vehicle;
+    document.getElementById("tripDeparture").value = trip.departure;
+document.getElementById("tripVehicle").value = trip.vehicle;
     document.getElementById("tripDriver").value = trip.driver;
     document.getElementById("tripCapacity").value = trip.capacity;
 
