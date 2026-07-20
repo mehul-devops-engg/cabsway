@@ -170,3 +170,102 @@ header h2{
 }
 
 }
+.page{
+    display:none;
+}
+
+.active-page{
+    display:block;
+}
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.primary-btn{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.primary-btn:hover{
+    background:#15803d;
+}
+
+.table-container{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.trip-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.trip-table th,
+.trip-table td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+.trip-table th{
+    background:#f8fafc;
+}
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-content{
+    width:500px;
+    max-width:95%;
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    font-size:28px;
+    cursor:pointer;
+}
+
+.modal-body{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.modal-body input,
+.modal-body select{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
+}
