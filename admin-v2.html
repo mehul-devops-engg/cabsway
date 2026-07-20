@@ -43,21 +43,37 @@
 <!-- Dashboard -->
 <section id="dashboardPage" class="page active-page">
 
-    <h2 class="title">Today's Trips</h2>
+   <div class="page-header">
+    <h2>Dashboard</h2>
+</div>
 
-    <div id="tripContainer">
+<div class="cards">
 
-        <div class="trip-card">
-
-            <h3>🚑 No Trips Yet</h3>
-
-            <p>Create your first trip.</p>
-
-            <button>Add Trip</button>
-
-        </div>
-
+    <div class="card">
+        <h3>Revenue Today</h3>
+        <h1 id="todayRevenue">₹0</h1>
     </div>
+
+    <div class="card">
+        <h3>Trips Today</h3>
+        <h1 id="todayTrips">0</h1>
+    </div>
+
+    <div class="card">
+        <h3>Bookings Today</h3>
+        <h1 id="todayBookings">0</h1>
+    </div>
+
+    <div class="card">
+        <h3>Seats Available</h3>
+        <h1 id="todaySeats">0</h1>
+    </div>
+
+</div>
+
+<h2 style="margin-top:30px;">Today's Trips</h2>
+
+<div id="dashboardTrips"></div>
 
 </section>
 
@@ -152,76 +168,7 @@
     <p>Settings page coming soon...</p>
 
 </section>
-<h2>Dashboard</h2>
 
-<div class="admin">
-
-Administrator
-
-</div>
-
-</header>
-
-<div class="cards">
-
-<div class="card">
-
-<h3>Revenue Today</h3>
-
-<h1>₹0</h1>
-
-</div>
-
-<div class="card">
-
-<h3>Trips Today</h3>
-
-<h1>0</h1>
-
-</div>
-
-<div class="card">
-
-<h3>Bookings</h3>
-
-<h1>0</h1>
-
-</div>
-
-<div class="card">
-
-<h3>Seats Left</h3>
-
-<h1>0</h1>
-
-</div>
-
-</div>
-
-<h2 class="title">
-
-Today's Trips
-
-</h2>
-
-<div id="tripContainer">
-
-<div class="trip-card">
-
-<h3>🚗 No Trips Yet</h3>
-
-<p>Create your first trip.</p>
-
-<button>Add Trip</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- New Trip Modal -->
 <div id="tripModal" class="modal">
 
     <div class="modal-content">
