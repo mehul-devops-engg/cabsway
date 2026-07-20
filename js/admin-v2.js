@@ -398,28 +398,34 @@ function deleteTrip(tripId) {
 
 }
 
-document.getElementById("bookingTrip").addEventListener("change", function () {
+const bookingTrip = document.getElementById("bookingTrip");
 
-    const option = this.options[this.selectedIndex];
+if (bookingTrip) {
 
-    if (!option.value) return;
+    bookingTrip.addEventListener("change", function () {
 
-    document.getElementById("bookingDate").value =
-        option.dataset.date.split("T")[0];
+        const option = this.options[this.selectedIndex];
 
-    document.getElementById("bookingCar").value =
-        option.dataset.car;
+        if (!option.value) return;
 
-    document.getElementById("bookingPickup").value =
-        option.dataset.pickup;
+        document.getElementById("bookingDate").value =
+            option.dataset.date.split("T")[0];
 
-    document.getElementById("bookingDestination").value =
-        option.dataset.destination;
+        document.getElementById("bookingCar").value =
+            option.dataset.car;
 
-    document.getElementById("bookingAvailable").value =
-        option.dataset.available;
+        document.getElementById("bookingPickup").value =
+            option.dataset.pickup;
 
-});
+        document.getElementById("bookingDestination").value =
+            option.dataset.destination;
+
+        document.getElementById("bookingAvailable").value =
+            option.dataset.available;
+
+    });
+
+}
 
 function closeBookingModal() {
 
@@ -438,3 +444,10 @@ window.onclick = function(event) {
     }
 
 };
+document.getElementById("addBookingBtn").addEventListener("click", function () {
+
+    loadBookingTrips();
+
+    document.getElementById("bookingModal").style.display = "block";
+
+});
