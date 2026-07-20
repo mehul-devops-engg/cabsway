@@ -197,12 +197,20 @@ function loadTrips() {
             tbody.innerHTML += `
             <tr>
                 <td>${trip.tripId}</td>
-                <td>${new Date(trip.date).toLocaleDateString("en-GB")}</td>
+                <td>${
+    trip.date
+        ? new Date(trip.date).toLocaleDateString("en-GB")
+        : "-"
+}</td>
                 <td>${trip.route}</td>
-                <td>${new Date(trip.departure).toLocaleTimeString("en-IN",{
-hour:"2-digit",
-minute:"2-digit"
-})}</td>
+                <td>${
+    trip.departure
+        ? new Date("1970-01-01T" + trip.departure).toLocaleTimeString("en-IN", {
+              hour: "2-digit",
+              minute: "2-digit"
+          })
+        : "-"
+}</td>
                 <td>${trip.vehicle}</td>
                 <td>${trip.driver}</td>
                 <td>${trip.capacity}</td>
@@ -322,7 +330,7 @@ function loadBookings() {
 
         tbody.innerHTML = "";
 
-        if(res.rows.length === 0){
+        if(!res.rows || res.rows.length === 0){
 
             tbody.innerHTML = `
                 <tr>
@@ -335,7 +343,7 @@ function loadBookings() {
             return;
         }
 
-        res.rows.forEach(function(row){
+        (res.rows || []).forEach(function(row){
 
             tbody.innerHTML += `
                 <tr>
