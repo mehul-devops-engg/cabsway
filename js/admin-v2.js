@@ -1,6 +1,7 @@
 // Your Google Apps Script Web App URL
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSQCwytw93-CFNTWbsgh3QDW7paXy09ilKy6NZyThDkMYHsxj7etWeU95wCn7iFu1TiQ/exec";
 let editingTripId = null;
+let editingBookingId = null;
 const menuItems = document.querySelectorAll(".menu-item");
 const pages = document.querySelectorAll(".page");
 
@@ -331,7 +332,7 @@ console.log("Trips received:", res.trips);
 
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="9" style="text-align:center;padding:30px;">
+                    <td colspan="9" style="text-align:center;padding:3f0px;">
                         No bookings found
                     </td>
                 </tr>
@@ -470,9 +471,13 @@ document.getElementById("bookingAdvance").addEventListener("input", calculateBal
 
 function saveBooking() {
 
-    const url =
-        SCRIPT_URL +
-        "?action=createBooking" +
+    const action = editingBookingId ? "updateBooking" : "createBooking";
+
+const url =
+    SCRIPT_URL +
+    "?action=" + action +
+    "&bookingId=" + encodeURIComponent(editingBookingId || "") +
+    "&tripId=" + encodeURIComponent(document.getElementById("bookingTrip").value) +
         "&tripId=" + encodeURIComponent(document.getElementById("bookingTrip").value) +
         "&date=" + encodeURIComponent(document.getElementById("bookingDate").value) +
         "&car=" + encodeURIComponent(document.getElementById("bookingCar").value) +
