@@ -136,24 +136,32 @@ function loadFleet() {
 
         vehicle.innerHTML = '<option value="">Select Vehicle</option>';
 
-        res.fleet.forEach(car => {
+       res.fleet.forEach(car => {
 
-            vehicle.innerHTML +=
-                `<option value="${car.vehicle}" data-capacity="${car.capacity}">
-                    ${car.vehicle}
-                </option>`;
+    vehicle.innerHTML += `
+        <option
+            value="${car.carId}"
+            data-capacity="${car.capacity}"
+            data-driver="${car.driver}">
+            ${car.carId} - ${car.model}
+        </option>`;
+
+});
 
         });
 
-    });
+    };
 
-}
+
 document.getElementById("tripVehicle").addEventListener("change", function () {
 
     const option = this.options[this.selectedIndex];
 
     document.getElementById("tripCapacity").value =
         option.dataset.capacity || "";
+
+    document.getElementById("tripDriver").value =
+        option.dataset.driver || "";
 
 });
 window.addEventListener("load", loadTrips);
