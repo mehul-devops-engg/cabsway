@@ -203,3 +203,57 @@ minute:"2-digit"
     });
 
 }
+window.addEventListener("load", loadDashboard);
+
+function loadDashboard() {
+
+    jsonp(SCRIPT_URL + "?action=listTrips", function(res){
+
+        if(!res.ok) return;
+
+        const trips = res.trips || [];
+
+        document.getElementById("todayTrips").textContent = trips.length;
+
+        let booked = 0;
+        let available = 0;
+
+        const dashboard = document.getElementById("dashboardTrips");
+
+        dashboard.innerHTML = "";
+
+        trips.forEach(function(trip){
+
+            booked += Number(trip.booked);
+            available += Number(trip.available);
+
+            dashboard.innerHTML += `
+            <div class="dashboard-trip">
+
+                <div class="dashboard-trip-top">
+                    <h3>${trip.tripId}</h3>
+                    <span class="trip-status">${trip.status}</span>
+                </div>
+
+                <div class="trip-route">
+                    ${trip.route}
+                </div>
+
+                <div class="trip-info">
+                    <div>🕒 ${new Date(trip.departure).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</div>
+                    <div>🚗 ${trip.vehicle}</div>
+                    <div>👤 ${trip.driver}</div>
+                    <div>💺 ${trip.booked}/${trip.capacity}</div>
+                </div>
+
+            </div>`;
+        });
+
+        document.getElementById("todayBookings").textContent = booked;
+        document.getElementById("todaySeats").textContent = available;
+
+        document.getElementById("todayRevenue").textContent = "₹0";
+
+    });
+
+}
