@@ -313,10 +313,12 @@ function loadBookings() {
 }
 function editTrip(trip) {
 
-    document.getElementById("tripDate").value = trip.date;
+    document.getElementById("tripDate").value =
+    new Date(trip.date).toISOString().split("T")[0];
     document.getElementById("tripPickup").value = trip.pickup;
     document.getElementById("tripDestination").value = trip.destination;
-    document.getElementById("tripDeparture").value = trip.departure;
+    document.getElementById("tripDeparture").value =
+    new Date(trip.departure).toTimeString().slice(0, 5);
     document.getElementById("tripVehicle").value = trip.vehicle;
     document.getElementById("tripDriver").value = trip.driver;
     document.getElementById("tripCapacity").value = trip.capacity;
