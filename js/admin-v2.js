@@ -296,7 +296,7 @@ function loadDashboard() {
                 </div>
 
                 <div class="trip-info">
-                    <div>🕒 ${new Date(trip.departure).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</div>
+                    <div>🕒 ${trip.departure}</div>
                     <div>🚗 ${trip.vehicle}</div>
                     <div>👤 ${trip.driver}</div>
                     <div>💺 ${trip.booked}/${trip.capacity}</div>
@@ -345,7 +345,7 @@ console.log("Trips received:", res.trips);
             tbody.innerHTML += `
                 <tr>
                     <td>${row.bookingId}</td>
-                    <td>${row.date}</td>
+                    <td>${new Date(row.date).toLocaleDateString("en-GB")}</td>
                     <td>${row.name}</td>
                     <td>${row.phone}</td>
                     <td>${row.car}</td>
@@ -486,6 +486,13 @@ function saveBooking() {
         if(res.ok){
 
             alert("Booking Saved Successfully!");
+            document.getElementById("customerName").value = "";
+document.getElementById("customerPhone").value = "";
+document.getElementById("bookingSeats").value = "";
+document.getElementById("bookingFare").value = "";
+document.getElementById("bookingAdvance").value = "0";
+document.getElementById("bookingBalance").value = "";
+document.getElementById("bookingNotes").value = "";
 
             closeBookingModal();
 
@@ -506,6 +513,22 @@ function saveBooking() {
 document.getElementById("addBookingBtn").addEventListener("click", function () {
 
     loadBookingTrips();
+
+    // Clear all fields
+    document.getElementById("bookingTrip").value = "";
+    document.getElementById("bookingDate").value = "";
+    document.getElementById("bookingCar").value = "";
+    document.getElementById("bookingPickup").value = "";
+    document.getElementById("bookingDestination").value = "";
+    document.getElementById("bookingAvailable").value = "";
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("bookingSeats").value = "";
+    document.getElementById("bookingFare").value = "";
+    document.getElementById("bookingAdvance").value = "0";
+    document.getElementById("bookingBalance").value = "";
+    document.getElementById("bookingPayment").value = "Pending";
+    document.getElementById("bookingNotes").value = "";
 
     document.getElementById("bookingModal").style.display = "flex";
 
