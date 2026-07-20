@@ -257,6 +257,101 @@
 
 </div>
 <script src="js/admin-v2.js"></script>
+<!-- Booking Modal -->
+<div id="bookingModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeBookingModal()">&times;</span>
+
+        <h2>New Booking</h2>
+
+        <div class="form-group">
+            <label>Trip</label>
+            <select id="bookingTrip">
+                <option value="">Select Trip</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="bookingDate" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Car</label>
+            <input type="text" id="bookingCar" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Pickup</label>
+            <input type="text" id="bookingPickup" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Destination</label>
+            <input type="text" id="bookingDestination" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Available Seats</label>
+            <input type="number" id="bookingAvailable" readonly>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" id="customerName">
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" id="customerPhone">
+        </div>
+
+        <div class="form-group">
+            <label>Seats</label>
+            <input type="number" id="bookingSeats">
+        </div>
+
+        <div class="form-group">
+            <label>Fare (₹)</label>
+            <input type="number" id="bookingFare">
+        </div>
+
+        <div class="form-group">
+            <label>Advance (₹)</label>
+            <input type="number" id="bookingAdvance" value="0">
+        </div>
+
+        <div class="form-group">
+            <label>Balance (₹)</label>
+            <input type="number" id="bookingBalance" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Payment</label>
+
+            <select id="bookingPayment">
+                <option>Pending</option>
+                <option>Partial</option>
+                <option>Paid</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Notes</label>
+            <textarea id="bookingNotes"></textarea>
+        </div>
+
+        <button id="saveBookingBtn">
+            Save Booking
+        </button>
+
+    </div>
+
+</div>
 </body>
 
 </html>
