@@ -203,7 +203,7 @@ minute:"2-digit"
                 <td>${trip.available}</td>
                 <td>${trip.status}</td>
 <td>
-    <button class="edit-btn" onclick="editTrip('${trip.tripId}')">
+    <button class="edit-btn" onclick='editTrip(${JSON.stringify(trip)})'>
         Edit
     </button>
 </td>
@@ -311,6 +311,15 @@ function loadBookings() {
     });
 
 }
-function editTrip(tripId) {
-    alert("Edit Trip: " + tripId);
+function editTrip(trip) {
+
+    document.getElementById("tripDate").value = trip.date;
+    document.getElementById("tripPickup").value = trip.pickup;
+    document.getElementById("tripDestination").value = trip.destination;
+    document.getElementById("tripDeparture").value = trip.departure;
+    document.getElementById("tripVehicle").value = trip.vehicle;
+    document.getElementById("tripDriver").value = trip.driver;
+    document.getElementById("tripCapacity").value = trip.capacity;
+
+    tripModal.style.display = "flex";
 }
