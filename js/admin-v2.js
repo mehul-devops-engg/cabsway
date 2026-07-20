@@ -365,3 +365,25 @@ function deleteTrip(tripId) {
     });
 
 }
+document.getElementById("addBookingBtn").addEventListener("click", function () {
+
+    document.getElementById("bookingModal").style.display = "block";
+
+});
+function closeBookingModal() {
+
+    document.getElementById("bookingModal").style.display = "none";
+
+}
+
+window.onclick = function(event) {
+
+    const modal = document.getElementById("bookingModal");
+
+    if (event.target === modal) {
+
+        modal.style.display = "none";
+
+    }
+
+};
