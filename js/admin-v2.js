@@ -68,9 +68,10 @@ function saveTrip() {
 
     const route = pickup + " → " + destination;
 
+    const action = editingTripId ? "updateTrip" : "createTrip";
     const url =
         SCRIPT_URL +
-        "?action=createTrip" +
+        "?action=" + action +
         "&date=" + encodeURIComponent(date) +
         "&route=" + encodeURIComponent(route) +
         "&pickup=" + encodeURIComponent(pickup) +
@@ -78,14 +79,19 @@ function saveTrip() {
         "&departure=" + encodeURIComponent(departure) +
         "&vehicle=" + encodeURIComponent(vehicle) +
         "&driver=" + encodeURIComponent(driver) +
-        "&capacity=" + encodeURIComponent(capacity);
+        "&capacity=" + encodeURIComponent(capacity) +
+"&tripId=" + encodeURIComponent(editingTripId || "");
     
 
     jsonp(url, function (res) {
 
        if (res.ok) {
 
-    alert("Trip Created Successfully!");
+    alert(editingTripId ? "Trip Updated Successfully!" : "Trip Created Successfully!");
+
+editingTripId = null;
+
+document.getElementById("saveTripBtn").textContent = "Save Trip";
 
     closeTripModal();
 
