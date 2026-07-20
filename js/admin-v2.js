@@ -531,6 +531,9 @@ loadDashboard();
 }
 
 document.getElementById("addBookingBtn").addEventListener("click", function () {
+    editingBookingId = null;
+
+document.getElementById("saveBookingBtn").textContent = "Save Booking";
 
     loadBookingTrips();
 
