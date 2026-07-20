@@ -257,3 +257,47 @@ function loadDashboard() {
     });
 
 }
+window.addEventListener("load", loadBookings);
+
+function loadBookings() {
+
+    jsonp(SCRIPT_URL + "?action=list", function(res){
+
+        if(!res.ok) return;
+
+        const tbody = document.getElementById("bookingTableBody");
+
+        tbody.innerHTML = "";
+
+        if(res.rows.length === 0){
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align:center;padding:30px;">
+                        No bookings found
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        res.rows.forEach(function(row){
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${row.bookingId}</td>
+                    <td>${row.date}</td>
+                    <td>${row.name}</td>
+                    <td>${row.phone}</td>
+                    <td>${row.car}</td>
+                    <td>${row.seats}</td>
+                    <td>₹${row.fare}</td>
+                    <td>${row.status}</td>
+                </tr>
+            `;
+        });
+
+    });
+
+}
