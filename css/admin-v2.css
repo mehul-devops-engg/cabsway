@@ -1,325 +1,330 @@
-// Your Google Apps Script Web App URL
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSQCwytw93-CFNTWbsgh3QDW7paXy09ilKy6NZyThDkMYHsxj7etWeU95wCn7iFu1TiQ/exec";
-const menuItems = document.querySelectorAll(".menu-item");
-const pages = document.querySelectorAll(".page");
-
-menuItems.forEach(item=>{
-
-    item.addEventListener("click",()=>{
-
-        menuItems.forEach(i=>i.classList.remove("active"));
-
-        item.classList.add("active");
-
-        pages.forEach(page=>{
-
-            page.classList.remove("active-page");
-
-        });
-
-        document
-            .getElementById(item.dataset.page)
-            .classList.add("active-page");
-
-    });
-
-});
-
-document.getElementById("closeTripModal").onclick = closeTripModal;
-document.getElementById("cancelTripBtn").onclick = closeTripModal;
-
-function closeTripModal(){
-    tripModal.style.display = "none";
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 }
 
-window.onclick = function(e){
-    if(e.target === tripModal){
-        closeTripModal();
-    }
-};
-const tripModal = document.getElementById("tripModal");
-const addTripBtn = document.getElementById("addTripBtn");
+body{
+    background:#f4f7fb;
+    display:flex;
+    color:#222;
+}
 
-console.log(tripModal);
-console.log(addTripBtn);
+/* Sidebar */
 
-addTripBtn.onclick = function () {
-    tripModal.style.display = "flex";
-};
+.sidebar{
+    width:250px;
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
+}
 
-document.getElementById("closeTripModal").onclick = function () {
-    tripModal.style.display = "none";
-};
+.logo{
+    padding:25px;
+    font-size:26px;
+    font-weight:bold;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
 
-document.getElementById("cancelTripBtn").onclick = function () {
-    tripModal.style.display = "none";
-};
-document.getElementById("saveTripBtn").onclick = saveTrip;
-function saveTrip() {
+.sidebar ul{
+    list-style:none;
+    margin-top:20px;
+}
 
-    const date = document.getElementById("tripDate").value;
-    const pickup = document.getElementById("tripPickup").value;
-    const destination = document.getElementById("tripDestination").value;
-    const departure = document.getElementById("tripDeparture").value;
-    const vehicle = document.getElementById("tripVehicle").value;
-    const driver = document.getElementById("tripDriver").value;
-    const capacity = document.getElementById("tripCapacity").value;
+.sidebar li{
+    padding:18px 25px;
+    cursor:pointer;
+    transition:.3s;
+}
 
-    const route = pickup + " → " + destination;
+.sidebar li:hover{
+    background:#1e293b;
+}
 
-    const url =
-        SCRIPT_URL +
-        "?action=createTrip" +
-        "&date=" + encodeURIComponent(date) +
-        "&route=" + encodeURIComponent(route) +
-        "&pickup=" + encodeURIComponent(pickup) +
-        "&destination=" + encodeURIComponent(destination) +
-        "&departure=" + encodeURIComponent(departure) +
-        "&vehicle=" + encodeURIComponent(vehicle) +
-        "&driver=" + encodeURIComponent(driver) +
-        "&capacity=" + encodeURIComponent(capacity);
-    
+.sidebar .active{
+    background:#16a34a;
+}
 
-    jsonp(url, function (res) {
+/* Main */
 
-       if (res.ok) {
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    padding:30px;
+}
 
-    alert("Trip Created Successfully!");
+/* Header */
 
-    closeTripModal();
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
 
-    loadTrips();
+.admin{
+    background:white;
+    padding:10px 18px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
 
+/* Cards */
 
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+    margin-bottom:30px;
+}
 
-        } else {
+.card{
+    background:#fff;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
 
-            alert(res.error || "Failed to create trip.");
+.card h3{
+    color:#666;
+    margin-bottom:10px;
+    font-size:16px;
+}
 
-        }
+.card h1{
+    margin-top:15px;
+    color:#16a34a;
+    font-size:42px;
+    font-weight:700;
+}
 
-    });
+/* Trips */
+
+.title{
+    margin-bottom:20px;
+}
+
+.trip-card{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.trip-card h3{
+    margin-bottom:10px;
+}
+
+.trip-card p{
+    color:#666;
+    margin-bottom:20px;
+}
+
+.trip-card button{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.trip-card button:hover{
+    background:#15803d;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.sidebar{
+    width:70px;
+}
+
+.logo{
+    font-size:16px;
+    padding:20px 5px;
+}
+
+.sidebar li{
+    padding:18px 10px;
+    font-size:13px;
+}
+
+.main{
+    margin-left:70px;
+    width:calc(100% - 70px);
+    padding:20px;
+}
+
+header h2{
+    font-size:22px;
+}
+
+.card h1{
+    font-size:28px;
+}
 
 }
-function jsonp(url, callback) {
-
-    const callbackName = "cb_" + Date.now();
-
-    window[callbackName] = function (data) {
-
-        callback(data);
-
-        delete window[callbackName];
-
-        document.body.removeChild(script);
-
-    };
-
-    const script = document.createElement("script");
-
-    script.src = url + "&callback=" + callbackName;
-
-    document.body.appendChild(script);
-
+.page{
+    display:none;
 }
-window.addEventListener("load", loadFleet);
 
-function loadFleet() {
-
-    const url = SCRIPT_URL + "?action=fleet";
-
-    jsonp(url, function(res) {
-
-        if (!res.ok) return;
-
-        const vehicle = document.getElementById("tripVehicle");
-
-        vehicle.innerHTML = '<option value="">Select Vehicle</option>';
-
-       res.fleet.forEach(car => {
-
-    vehicle.innerHTML += `
-        <option
-            value="${car.carId}"
-            data-model="${car.model}"
-            data-capacity="${car.capacity}">
-            ${car.carId} - ${car.model}
-        </option>`;
-
-});
-
-        });
-
-    };
-
-
-document.getElementById("tripVehicle").addEventListener("change", function () {
-
-    const option = this.options[this.selectedIndex];
-
-    document.getElementById("tripCapacity").value =
-        option.dataset.capacity || "";
-
-});
-window.addEventListener("load", loadTrips);
-
-function loadTrips() {
-
-    jsonp(SCRIPT_URL + "?action=listTrips", function(res){
-
-        if(!res.ok) return;
-
-        const tbody = document.getElementById("tripTableBody");
-
-        tbody.innerHTML = "";
-
-        if(res.trips.length === 0){
-
-            tbody.innerHTML =
-            `<tr>
-                <td colspan="10" style="text-align:center;">
-                    No trips available
-                </td>
-            </tr>`;
-
-            return;
-        }
-
-        res.trips.forEach(function(trip){
-
-            tbody.innerHTML += `
-            <tr>
-                <td>${trip.tripId}</td>
-                <td>${new Date(trip.date).toLocaleDateString("en-GB")}</td>
-                <td>${trip.route}</td>
-                <td>${new Date(trip.departure).toLocaleTimeString("en-IN",{
-hour:"2-digit",
-minute:"2-digit"
-})}</td>
-                <td>${trip.vehicle}</td>
-                <td>${trip.driver}</td>
-                <td>${trip.capacity}</td>
-                <td>${trip.booked}</td>
-                <td>${trip.available}</td>
-                <td>${trip.status}</td>
-<td>
-    <button class="edit-btn" onclick='editTrip(${JSON.stringify(trip)})'>
-        Edit
-    </button>
-</td>
-            </tr>`;
-        });
-
-    });
-
+.active-page{
+    display:block;
 }
-window.addEventListener("load", loadDashboard);
-
-function loadDashboard() {
-
-    jsonp(SCRIPT_URL + "?action=listTrips", function(res){
-
-        if(!res.ok) return;
-
-        const trips = res.trips || [];
-
-        document.getElementById("todayTrips").textContent = trips.length;
-
-        let booked = 0;
-        let available = 0;
-
-        const dashboard = document.getElementById("dashboardTrips");
-
-        dashboard.innerHTML = "";
-
-        trips.forEach(function(trip){
-
-            booked += Number(trip.booked);
-            available += Number(trip.available);
-
-            dashboard.innerHTML += `
-            <div class="dashboard-trip">
-
-                <div class="dashboard-trip-top">
-                    <h3>${trip.tripId}</h3>
-                    <span class="trip-status">${trip.status}</span>
-                </div>
-
-                <div class="trip-route">
-                    ${trip.route}
-                </div>
-
-                <div class="trip-info">
-                    <div>🕒 ${new Date(trip.departure).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</div>
-                    <div>🚗 ${trip.vehicle}</div>
-                    <div>👤 ${trip.driver}</div>
-                    <div>💺 ${trip.booked}/${trip.capacity}</div>
-                </div>
-
-            </div>`;
-        });
-
-        document.getElementById("todayBookings").textContent = booked;
-        document.getElementById("todaySeats").textContent = available;
-
-        document.getElementById("todayRevenue").textContent = "₹0";
-
-    });
-
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
 }
-window.addEventListener("load", loadBookings);
 
-function loadBookings() {
-
-    jsonp(SCRIPT_URL + "?action=list", function(res){
-
-        if(!res.ok) return;
-
-        const tbody = document.getElementById("bookingTableBody");
-
-        tbody.innerHTML = "";
-
-        if(res.rows.length === 0){
-
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="8" style="text-align:center;padding:30px;">
-                        No bookings found
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-        res.rows.forEach(function(row){
-
-            tbody.innerHTML += `
-                <tr>
-                    <td>${row.bookingId}</td>
-                    <td>${row.date}</td>
-                    <td>${row.name}</td>
-                    <td>${row.phone}</td>
-                    <td>${row.car}</td>
-                    <td>${row.seats}</td>
-                    <td>₹${row.fare}</td>
-                    <td>${row.status}</td>
-                </tr>
-            `;
-        });
-
-    });
-
+.primary-btn{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
 }
-function editTrip(trip) {
 
-    document.getElementById("tripDate").value = trip.date;
-    document.getElementById("tripPickup").value = trip.pickup;
-    document.getElementById("tripDestination").value = trip.destination;
-    document.getElementById("tripDeparture").value = trip.departure;
-    document.getElementById("tripVehicle").value = trip.vehicle;
-    document.getElementById("tripDriver").value = trip.driver;
-    document.getElementById("tripCapacity").value = trip.capacity;
+.primary-btn:hover{
+    background:#15803d;
+}
 
-    tripModal.style.display = "flex";
+.table-container{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.trip-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.trip-table th,
+.trip-table td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+.trip-table th{
+    background:#f8fafc;
+}
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-content{
+    width:500px;
+    max-width:95%;
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    font-size:28px;
+    cursor:pointer;
+}
+
+.modal-body{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.modal-body input,
+.modal-body select{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
+}
+/* Dashboard Grid Fix */
+#dashboardPage .cards{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(220px,1fr)) !important;
+    gap:20px !important;
+}
+
+#dashboardPage .card{
+    width:100%;
+}
+.dashboard-trip-list{
+    display:grid;
+    gap:18px;
+    margin-top:20px;
+}
+
+.dashboard-trip{
+    background:#fff;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.dashboard-trip-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.trip-status{
+    background:#22c55e;
+    color:#fff;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.trip-route{
+    font-size:22px;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+.trip-info{
+    display:flex;
+    gap:25px;
+    flex-wrap:wrap;
+    color:#666;
+}
+
+.loading-card{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
 }
