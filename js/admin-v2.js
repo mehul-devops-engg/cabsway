@@ -141,8 +141,8 @@ function loadFleet() {
     vehicle.innerHTML += `
         <option
             value="${car.carId}"
-            data-capacity="${car.capacity}"
-            data-driver="${car.driver}">
+            data-model="${car.model}"
+            data-capacity="${car.capacity}">
             ${car.carId} - ${car.model}
         </option>`;
 
@@ -159,9 +159,6 @@ document.getElementById("tripVehicle").addEventListener("change", function () {
 
     document.getElementById("tripCapacity").value =
         option.dataset.capacity || "";
-
-    document.getElementById("tripDriver").value =
-        option.dataset.driver || "";
 
 });
 window.addEventListener("load", loadTrips);
