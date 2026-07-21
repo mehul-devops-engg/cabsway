@@ -503,6 +503,12 @@ function calculateBalance() {
 
 }
 
+document.getElementById("bookingFare")
+    .addEventListener("input", calculateBalance);
+
+document.getElementById("bookingAdvance")
+    .addEventListener("input", calculateBalance);
+
 function saveBooking() {
 
     const action = editingBookingId ? "updateBooking" : "createBooking";
@@ -645,6 +651,8 @@ function editBooking(bookingId) {
 
             document.getElementById("bookingPayment").value =
                 booking.payment;
+
+                calculateBalance();
 
             document.getElementById("bookingNotes").value =
                 booking.notes;
