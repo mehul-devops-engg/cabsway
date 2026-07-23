@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews | CabsWay Nashik Cab Service</title>
+<meta name="description" content="Read what travellers say about booking outstation cabs with CabsWay across Nashik, Pune, Mumbai and Chhatrapati Sambhaji Nagar.">
+<meta name="keywords" content="cabsway reviews, cabs way, cab's way, nashik cab reviews">
+<link rel="canonical" href="https://cabsway.in/reviews.html">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CabsWay">
+<meta property="og:title" content="Reviews | CabsWay Nashik Cab Service">
+<meta property="og:image" content="https://cabsway.in/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="nav-wrap container">
+    <a href="index.html" class="brand"><img src="images/logo.svg" alt="CabsWay logo">CabsWay</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="booking.html">Book a Cab</a></li>
+        <li><a href="fleet.html">Fleet</a></li>
+        <li><a href="routes.html">Popular Routes</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="reviews.html" class="active">Reviews</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="section-tight" style="padding-top:40px;">
+  <div class="container">
+    <p class="eyebrow">Reviews</p>
+    <h1>4.8★ from travellers on the road</h1>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="grid grid-2" id="reviews-grid"></div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <span>© 2026 CabsWay. All rights reserved.</span>
+    <a href="index.html">← Back to Home</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script src="js/demo-data.js"></script>
+<script>
+  (async function () {
+    var reviews = await cwApiCall('getReviews');
+    var grid = document.getElementById('reviews-grid');
+    grid.innerHTML = reviews.map(function (r) {
+      var stars = '★★★★★☆☆☆☆☆'.slice(5 - r.rating, 10 - r.rating);
+      return (
+        '<div class="card feature-card reveal in">' +
+          '<div style="color:var(--marigold);letter-spacing:2px;">' + stars + '</div>' +
+          '<p style="margin-top:10px;">“' + r.text + '”</p>' +
+          '<p class="text-sm muted" style="margin:0;"><strong>' + r.name + '</strong> · ' + r.route + '</p>' +
+        '</div>'
+      );
+    }).join('');
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookings | CabsWay Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../images/favicon.ico">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/admin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="../images/logo.svg" alt="">CabsWay</div>
+    <ul class="admin-nav">
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+      <li><a href="trips.html">🚖 Trips</a></li>
+      <li><a href="bookings.html">🎫 Bookings</a></li>
+      <li><a href="fleet.html">🚗 Fleet</a></li>
+      <li><a href="reports.html">📈 Reports</a></li>
+      <li><a href="settings.html">⚙ Settings</a></li>
+      <li class="nav-section">Session</li>
+      <li><a href="../index.html">🌐 View Website</a></li>
+      <li><a href="#" id="admin-logout">🚪 Log Out</a></li>
+    </ul>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="flex gap-8"><button class="admin-menu-toggle">☰</button><strong>Bookings</strong></div>
+      <button class="btn btn-primary btn-sm" onclick="cwOpenBookingModal()">+ New Booking</button>
+    </div>
+
+    <div class="admin-content">
+      <div class="toolbar">
+        <input type="search" id="bk-search" placeholder="Search name, phone, booking ID…">
+        <select id="bk-filter-status">
+          <option value="">All Status</option>
+          <option value="today">Today</option>
+          <option value="Booked">Booked</option>
+          <option value="Completed">Completed Ride</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+        <select id="bk-filter-payment">
+          <option value="">All Payments</option>
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+          <option value="Partial">Partial</option>
+        </select>
+        <span class="spacer"></span>
+        <span class="text-sm muted" id="bk-count"></span>
+      </div>
+
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>Booking ID</th><th>Customer</th><th>Route</th><th>Date</th><th>Fare</th><th>Paid</th><th>Balance</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="bookings-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create / Edit Booking Modal -->
+<div class="modal-backdrop" id="booking-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="cwCloseModal('booking-modal')">✕</button>
+    <h3 id="booking-modal-title">New Booking</h3>
+    <form id="booking-admin-form">
+      <input type="hidden" id="bk-bookingId">
+      <div class="form-row">
+        <div class="field"><label for="bk-name">Customer Name</label><input type="text" id="bk-name" required></div>
+        <div class="field"><label for="bk-phone">Phone</label><input type="tel" id="bk-phone" required></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="bk-pickup">Pickup</label><input type="text" id="bk-pickup" required></div>
+        <div class="field"><label for="bk-drop">Drop</label><input type="text" id="bk-drop" required></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="bk-date">Date</label><input type="date" id="bk-date" required></div>
+        <div class="field"><label for="bk-time">Time</label><input type="time" id="bk-time" required></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="bk-passengers">Passengers</label><input type="number" id="bk-passengers" min="1" value="1" required></div>
+        <div class="field">
+          <label for="bk-trip">Link to Trip (optional)</label>
+          <select id="bk-trip"><option value="">— Not linked —</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="bk-fare">Total Fare (₹)</label><input type="number" id="bk-fare" min="0" required></div>
+        <div class="field"><label for="bk-paid">Amount Paid (₹)</label><input type="number" id="bk-paid" min="0" value="0" required></div>
+      </div>
+      <p class="text-sm muted">Balance and payment status (Pending / Partial / Paid) are calculated automatically from fare and amount paid.</p>
+      <button type="submit" class="btn btn-primary btn-block">Save Booking</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/demo-data.js"></script>
+<script src="../js/admin-common.js"></script>
+<script src="../js/admin-bookings.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact CabsWay | Nashik Cab Booking</title>
+<meta name="description" content="Get in touch with CabsWay for bookings, group trips and support. Call or WhatsApp us directly — no office visit needed.">
+<meta name="keywords" content="contact cabsway, cabs way, cab's way, nashik cab contact">
+<link rel="canonical" href="https://cabsway.in/contact.html">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CabsWay">
+<meta property="og:title" content="Contact CabsWay | Nashik Cab Booking">
+<meta property="og:image" content="https://cabsway.in/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="nav-wrap container">
+    <a href="index.html" class="brand"><img src="images/logo.svg" alt="CabsWay logo">CabsWay</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="booking.html">Book a Cab</a></li>
+        <li><a href="fleet.html">Fleet</a></li>
+        <li><a href="routes.html">Popular Routes</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="section-tight" style="padding-top:40px;">
+  <div class="container">
+    <p class="eyebrow">Contact</p>
+    <h1>We're on call, literally</h1>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+    <div class="grid" style="align-content:start;">
+      <div class="card feature-card">
+        <div class="icon-badge"><img src="images/icons/phone.svg" alt=""></div>
+        <h3>Call Us</h3>
+        <p><a href="tel:+919158818546">+91 91588 18546</a> — 24/7 booking line</p>
+      </div>
+      <div class="card feature-card">
+        <div class="icon-badge"><img src="images/icons/whatsapp.svg" alt=""></div>
+        <h3>WhatsApp</h3>
+        <p><a href="https://wa.me/919158818546" target="_blank" rel="noopener">Chat with us directly</a> for bookings and group quotes.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="icon-badge"><img src="images/icons/map-pin.svg" alt=""></div>
+        <h3>Where We Operate</h3>
+        <p>CabsWay is a Nashik-based, on-call cab service — we don't have a walk-in office, but our team is reachable by phone and WhatsApp every day, all day.</p>
+      </div>
+    </div>
+
+    <form class="booking-panel" id="contact-form">
+      <h3 class="mt-0">Send a Message</h3>
+      <div class="field"><label for="c-name">Name</label><input type="text" id="c-name" required></div>
+      <div class="field"><label for="c-phone">Phone</label><input type="tel" id="c-phone" required></div>
+      <div class="field"><label for="c-message">Message</label><textarea id="c-message" rows="4" required placeholder="Tell us about your trip"></textarea></div>
+      <button type="submit" class="btn btn-primary btn-block">Send via WhatsApp</button>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <span>© 2026 CabsWay. All rights reserved.</span>
+    <a href="index.html">← Back to Home</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script>
+  document.getElementById('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = 'Contact message from ' + document.getElementById('c-name').value +
+      ' (' + document.getElementById('c-phone').value + '):\n' +
+      document.getElementById('c-message').value;
+    window.open(cwBuildWhatsAppLink(msg), '_blank');
+  });
+</script>
+</body>
+</html>
