@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Cab Online | Fixed Routes & Custom Trips | CabsWay Nashik</title>
+<meta name="description" content="Book a CabsWay outstation cab in minutes — choose a fixed route (Nashik, Pune, Mumbai, Chhatrapati Sambhaji Nagar) or a custom pickup and drop, then confirm your driver and fare on WhatsApp.">
+<meta name="keywords" content="cabsway, cabs way, cab's way, book cab online nashik, nashik pune cab booking, nashik mumbai cab booking">
+<link rel="canonical" href="https://cabsway.in/booking.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Book a Cab | CabsWay">
+<meta property="og:image" content="https://cabsway.in/images/og-image.png">
+<link rel="icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class="site-header">
+  <div class="nav-wrap container">
+    <a href="index.html" class="brand"><img src="images/logo.svg" alt="CabsWay logo">CabsWay</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="booking.html" class="active">Book a Cab</a></li>
+        <li><a href="fleet.html">Fleet</a></li>
+        <li><a href="routes.html">Popular Routes</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="tel:+911234567890" class="btn btn-primary btn-sm">📞 Call</a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="section-tight" style="padding-top:40px;">
+  <div class="container">
+    <p class="eyebrow">Cab Booking</p>
+    <h1>Book your ride</h1>
+    <p class="hero-sub" style="color:var(--slate);">Fill in your trip details, pick a vehicle, and confirm instantly on WhatsApp. Our team locks the driver and car once you send the message.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container" style="display:grid;grid-template-columns:1.3fr .9fr;gap:32px;align-items:start;">
+
+    <form id="booking-form" class="booking-panel">
+      <div class="field">
+        <label for="b-mode">Route Type</label>
+        <select id="b-mode">
+          <option value="fixed">Fixed Route (Nashik ⇄ Pune / Mumbai / Chhatrapati Sambhaji Nagar, Mumbai ⇄ Pune)</option>
+          <option value="custom">Custom Pickup &amp; Destination</option>
+        </select>
+      </div>
+
+      <div id="fixed-route-fields">
+        <div class="field">
+          <label for="b-fixed-route">Select Route</label>
+          <select id="b-fixed-route"></select>
+        </div>
+      </div>
+
+      <div id="custom-route-fields" style="display:none;">
+        <div class="form-row">
+          <div class="field">
+            <label for="b-pickup">Pickup Location</label>
+            <input type="text" id="b-pickup" placeholder="Type any pickup location in India">
+          </div>
+          <div class="field">
+            <label for="b-drop">Drop Location</label>
+            <input type="text" id="b-drop" placeholder="Type any drop location in India">
+          </div>
+        </div>
+        <p class="text-sm muted">Enter any pickup and drop, anywhere in India — not limited to a preset list.</p>
+      </div>
+
+
+      <div class="form-row">
+        <div class="field">
+          <label for="b-date">Date</label>
+          <input type="date" id="b-date" required>
+        </div>
+        <div class="field">
+          <label for="b-time">Time</label>
+          <input type="time" id="b-time" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="b-passengers">Passenger Count</label>
+          <select id="b-passengers">
+            <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="b-trip-type">Trip Type</label>
+          <select id="b-trip-type">
+            <option value="One Way">One Way</option>
+            <option value="Round Trip">Round Trip</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Select Vehicle</label>
+        <div class="vehicle-pick" id="vehicle-pick">
+          <!-- populated by booking.js -->
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="b-name">Your Name</label>
+          <input type="text" id="b-name" required placeholder="Full name">
+        </div>
+        <div class="field">
+          <label for="b-phone">Phone Number</label>
+          <input type="tel" id="b-phone" required placeholder="10-digit mobile number" pattern="[0-9]{10}">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="b-notes">Notes (optional)</label>
+        <textarea id="b-notes" rows="2" placeholder="e.g. Flight number, extra luggage, child seat"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Book Now — Confirm on WhatsApp</button>
+      <p class="text-sm muted center" style="margin-top:10px;">You'll review your trip details before the message is sent — nothing is charged on this site.</p>
+    </form>
+
+    <!-- Live trip summary (no fare shown — confirmed by our team on WhatsApp) -->
+    <div class="meter" id="trip-ticket">
+      <span class="meter-label">Trip Ticket Preview</span>
+      <div class="meter-breakdown" style="border-top:none;margin-top:10px;"><span>Route</span><span id="ticket-route" style="color:#fff;">—</span></div>
+      <div class="meter-breakdown"><span>Date &amp; Time</span><span id="ticket-datetime">—</span></div>
+      <div class="meter-breakdown"><span>Passengers</span><span id="ticket-passengers">—</span></div>
+      <div class="meter-breakdown"><span>Vehicle</span><span id="ticket-vehicle">—</span></div>
+      <p class="text-sm" style="color:#9AA5BF;margin-top:14px;">Fares aren't published on the site — every trip is quoted directly by our team. Tap "Book Now" and we'll confirm your fare, driver and car on WhatsApp within minutes.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <span>© 2026 CabsWay. All rights reserved.</span>
+    <a href="index.html">← Back to Home</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/booking.js"></script>
+</body>
+</html>

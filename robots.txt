@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /backend/
+Disallow: /data/
+
+Sitemap: https://cabsway.in/sitemap.xml

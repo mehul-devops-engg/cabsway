@@ -1,0 +1,6 @@
+CarID,Model,Type,Capacity,Status,Features
+CW-101,Swift Dzire,Sedan,4,Available,"AC, Music System, 2 Bags"
+CW-102,Ertiga,SUV,6,Available,"AC, 3rd Row, 4 Bags"
+CW-103,WagonR,Hatchback,4,Available,"AC, Budget Friendly"
+CW-104,Tempo Traveller,Tempo Traveller,12,Maintenance,"AC, Pushback Seats, Group Travel"
+CW-105,Innova Crysta,SUV,7,Available,"AC, Premium, Captain Seats"

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports | CabsWay Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../images/favicon.ico">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/admin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="../images/logo.svg" alt="">CabsWay</div>
+    <ul class="admin-nav">
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+      <li><a href="trips.html">🚖 Trips</a></li>
+      <li><a href="bookings.html">🎫 Bookings</a></li>
+      <li><a href="fleet.html">🚗 Fleet</a></li>
+      <li><a href="reports.html">📈 Reports</a></li>
+      <li><a href="settings.html">⚙ Settings</a></li>
+      <li class="nav-section">Session</li>
+      <li><a href="../index.html">🌐 View Website</a></li>
+      <li><a href="#" id="admin-logout">🚪 Log Out</a></li>
+    </ul>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="flex gap-8"><button class="admin-menu-toggle">☰</button><strong>Reports</strong></div>
+      <div class="action-row">
+        <button class="btn btn-ghost btn-sm" id="export-pdf" title="Coming soon">Export PDF</button>
+        <button class="btn btn-ghost btn-sm" id="export-excel" title="Coming soon">Export Excel</button>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div class="toolbar">
+        <select id="rp-range">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+        <span class="spacer"></span>
+        <span class="text-sm muted" id="rp-range-label"></span>
+      </div>
+
+      <div class="grid grid-4" id="rp-cards"></div>
+
+      <div class="grid grid-2" style="margin-top:26px;align-items:start;">
+        <div class="table-card" style="padding:20px;">
+          <h3 class="mt-0">Bookings in Range</h3>
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Customer</th><th>Date</th><th>Fare</th><th>Status</th></tr></thead>
+            <tbody id="rp-bookings-body"></tbody>
+          </table>
+        </div>
+        <div class="table-card" style="padding:20px;">
+          <h3 class="mt-0">Trips in Range</h3>
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Route</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="rp-trips-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/demo-data.js"></script>
+<script src="../js/admin-common.js"></script>
+<script src="../js/admin-reports.js"></script>
+</body>
+</html>
