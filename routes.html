@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Popular Cab Routes — Nashik, Pune, Mumbai, Chhatrapati Sambhaji Nagar | CabsWay</title>
-<meta name="description" content="CabsWay fixed outstation cab routes: Nashik to Pune, Nashik to Mumbai, Nashik to Chhatrapati Sambhaji Nagar (Aurangabad), and Mumbai to Pune — plus custom trips to Shirdi, Trimbakeshwar and beyond.">
+<meta name="description" content="CabsWay fixed outstation cab routes: Nashik to Pune, Nashik to Mumbai, Nashik to Chhatrapati Sambhaji Nagar (Aurangabad), and Mumbai to Pune — plus custom trips from these 4 cities to anywhere in India.">
 <meta name="keywords" content="nashik pune cab, nashik mumbai cab, nashik chhatrapati sambhaji nagar cab, nashik aurangabad cab, mumbai pune cab, cabsway routes">
 <link rel="canonical" href="https://cabsway.in/routes.html">
 <meta name="robots" content="index, follow">
@@ -13,7 +13,7 @@
 <link rel="icon" href="images/favicon.ico">
 <link rel="stylesheet" href="css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -34,7 +34,6 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="booking.html">Book a Cab</a></li>
-        <li><a href="fleet.html">Fleet</a></li>
         <li><a href="routes.html" class="active">Popular Routes</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="reviews.html">Reviews</a></li>
@@ -54,7 +53,7 @@
   <div class="container">
     <p class="eyebrow">Popular Routes</p>
     <h1>Fixed routes, plus anywhere you need to go</h1>
-    <p class="hero-sub" style="color:var(--slate);">These four corridors are our most-booked fixed routes, run daily in both directions. Need somewhere else — Shirdi, Trimbakeshwar or another town? Book it as a custom destination and we'll quote you directly on WhatsApp.</p>
+    <p class="hero-sub" style="color:var(--slate);">These four corridors are our most-booked fixed routes, run daily in both directions. Need to go somewhere else entirely? Start a custom trip from Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar and we'll take you anywhere in India — quoted directly on WhatsApp.</p>
   </div>
 </section>
 
@@ -69,7 +68,7 @@
     <h2>About These Routes</h2>
     <div id="nashik-pune">
       <h3>Nashik ⇄ Pune</h3>
-      <p>Our busiest corridor, run daily for business travellers, students and families. Sedans, SUVs and tempo travellers are all available for the Nashik–Pune stretch.</p>
+      <p>Our busiest corridor, run daily for business travellers, students and families. Sedans and SUVs are available for the Nashik–Pune stretch.</p>
     </div>
     <div id="nashik-mumbai">
       <h3>Nashik ⇄ Mumbai</h3>
@@ -85,7 +84,7 @@
     </div>
     <div class="divider"></div>
     <h3>Custom Destinations</h3>
-    <p>Beyond our fixed routes, CabsWay also runs custom trips to <strong>Shirdi</strong> (Sai Baba Samadhi Mandir), <strong>Trimbakeshwar</strong> (one of the twelve Jyotirlingas, 30 minutes from Nashik), and anywhere else in India. Just choose "Custom Destination" on the <a href="booking.html">booking page</a>.</p>
+    <p>Beyond our fixed routes, CabsWay also runs custom trips starting from <strong>Nashik</strong>, <strong>Pune</strong>, <strong>Mumbai</strong> or <strong>Chhatrapati Sambhaji Nagar</strong> to anywhere else in India. Just choose "Custom Destination" on the <a href="booking.html">booking page</a>, pick your starting city, and type your destination.</p>
   </div>
 </section>
 </main>
@@ -111,7 +110,7 @@
         '<div class="card feature-card reveal in" id="card-' + anchor + '">' +
           '<div class="flex gap-8"><img src="images/icons/route.svg" style="width:22px;height:22px;" alt="">' +
           '<h3 style="margin:0;">' + r.from + ' ⇄ ' + r.to + '</h3></div>' +
-          '<p class="text-sm muted">' + r.distanceKm + ' km approx. · Sedan, SUV &amp; Tempo Traveller available</p>' +
+          '<p class="text-sm muted">' + r.distanceKm + ' km approx. · Sedan &amp; SUV available</p>' +
           '<div class="flex gap-14" style="margin-top:16px;flex-wrap:wrap;">' +
             '<a href="booking.html?mode=fixed&pickup=' + encodeURIComponent(r.from) + '&drop=' + encodeURIComponent(r.to) + '" class="btn btn-primary btn-sm">Book ' + r.from + ' → ' + r.to + '</a>' +
             '<a href="booking.html?mode=fixed&pickup=' + encodeURIComponent(r.to) + '&drop=' + encodeURIComponent(r.from) + '" class="btn btn-ghost btn-sm">Book ' + r.to + ' → ' + r.from + '</a>' +

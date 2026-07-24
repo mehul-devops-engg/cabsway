@@ -1,20 +1,35 @@
 /* CabsWay V2 — admin/bookings.html logic */
 
 var cwAllBookings = [];
-var cwOpenTripsForBookings = [];
+var cwTripsForBookings = [];
 
 document.addEventListener('DOMContentLoaded', async function () {
-  cwOpenTripsForBookings = (await cwApiCall('getTrips')).filter(function (t) { return t.status !== 'Completed'; });
-  document.getElementById('bk-trip').innerHTML += cwOpenTripsForBookings.map(function (t) {
-    return '<option value="' + t.tripId + '">' + t.tripId + ' — ' + t.pickup + ' → ' + t.drop + ' (' + t.date + ' ' + t.time + ')</option>';
-  }).join('');
+  var results = await Promise.all([cwApiCall('getTrips'), cwApiCall('getBookings')]);
+  cwTripsForBookings = results[0].filter(function (t) { return t.status !== 'Completed'; });
+  cwAllBookings = results[1];
 
-  await loadBookings();
+  populateTripDropdown();
+  renderBookings();
   document.getElementById('bk-search').addEventListener('input', renderBookings);
   document.getElementById('bk-filter-status').addEventListener('change', renderBookings);
   document.getElementById('bk-filter-payment').addEventListener('change', renderBookings);
   document.getElementById('booking-admin-form').addEventListener('submit', onSaveBooking);
 });
+
+/** Full trips are shown but disabled, so it's obvious why they can't be picked. */
+function populateTripDropdown(keepTripId) {
+  var select = document.getElementById('bk-trip');
+  var options = '<option value="">— Not linked —</option>' + cwTripsForBookings.map(function (t) {
+    var seatsLeft = Math.max(0, Number(t.totalSeats) - Number(t.bookedSeats));
+    var isFull = t.status === 'Full';
+    var disabled = (isFull && t.tripId !== keepTripId) ? 'disabled' : '';
+    var label = t.tripId + ' — ' + t.pickup + ' → ' + t.drop + ' (' + t.date + ' ' + t.time + ') — ' +
+      (isFull ? 'FULL' : seatsLeft + ' seat(s) left');
+    return '<option value="' + t.tripId + '" ' + disabled + '>' + label + '</option>';
+  }).join('');
+  select.innerHTML = options;
+  if (keepTripId) select.value = keepTripId;
+}
 
 async function loadBookings() {
   cwAllBookings = await cwApiCall('getBookings');
@@ -51,7 +66,7 @@ function renderBookings() {
       '<td class="action-row">' +
         '<button class="btn btn-ghost btn-sm" onclick="cwOpenBookingModal(\'' + b.bookingId + '\')">Edit</button>' +
         (b.status === 'Booked' ? '<button class="btn btn-dark btn-sm" onclick="cwCompleteBooking(\'' + b.bookingId + '\')">Complete</button>' : '') +
-        (b.status !== 'Cancelled' ? '<button class="btn btn-danger btn-sm" onclick="cwCancelBooking(\'' + b.bookingId + '\')">Cancel</button>' : '') +
+        (b.status === 'Booked' ? '<button class="btn btn-danger btn-sm" onclick="cwCancelBooking(\'' + b.bookingId + '\')">Cancel</button>' : '') +
       '</td></tr>';
   }).join('') : '<tr><td colspan="10" class="empty-state">No bookings match these filters.</td></tr>';
 }
@@ -61,6 +76,8 @@ function cwOpenBookingModal(bookingId) {
   form.reset();
   document.getElementById('bk-bookingId').value = '';
   document.getElementById('booking-modal-title').textContent = 'New Booking';
+  populateTripDropdown();
+
   if (bookingId) {
     var b = cwAllBookings.find(function (x) { return x.bookingId === bookingId; });
     if (b) {
@@ -73,9 +90,9 @@ function cwOpenBookingModal(bookingId) {
       document.getElementById('bk-date').value = b.date;
       document.getElementById('bk-time').value = b.time;
       document.getElementById('bk-passengers').value = b.passengers;
-      document.getElementById('bk-trip').value = b.tripId || '';
       document.getElementById('bk-fare').value = b.fare;
       document.getElementById('bk-paid').value = b.amountPaid;
+      populateTripDropdown(b.tripId); // keep its own trip selectable even if that trip is now Full
     }
   }
   cwOpenModal('booking-modal');
@@ -96,17 +113,21 @@ async function onSaveBooking(e) {
     amountPaid: Number(document.getElementById('bk-paid').value)
   };
   var existingId = document.getElementById('bk-bookingId').value;
-  if (existingId) {
-    payload.bookingId = existingId;
-    await cwApiCall('updateBooking', payload);
-    cwToast('Booking ' + existingId + ' updated.');
-  } else {
-    payload.estimatedFare = payload.fare;
-    var created = await cwApiCall('createBooking', payload);
-    cwToast('Booking ' + created.bookingId + ' created.');
+  try {
+    if (existingId) {
+      payload.bookingId = existingId;
+      await cwApiCall('updateBooking', payload);
+      cwToast('Booking ' + existingId + ' updated.');
+    } else {
+      var created = await cwApiCall('createBooking', payload);
+      cwToast('Booking ' + created.bookingId + ' created.');
+    }
+    cwCloseModal('booking-modal');
+    await loadBookings();
+    cwTripsForBookings = (await cwApiCall('getTrips')).filter(function (t) { return t.status !== 'Completed'; });
+  } catch (err) {
+    /* cwApiCall already showed the reason (e.g. trip is full) — keep the modal open so it can be fixed */
   }
-  cwCloseModal('booking-modal');
-  await loadBookings();
 }
 
 async function cwCompleteBooking(bookingId) {

@@ -9,7 +9,7 @@
    =================================================================== */
 
 var CW_CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbxcKGW_vMvB83gWAZ7nRMJunw2AEmgS0cBv0xXUfuOyYkSfR53eoQPDIMNWp4le1udq/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycby_lxPdUXL2vB9FWYoB4WHxQjSbFvx6MZIE_pUJ_7q8dFjY3KGqXAfaQeau-rmqzg/exec',
   WHATSAPP_NUMBER: '919158818546', // business WhatsApp number, country code + number, no + or spaces
   BUSINESS_NAME: 'CabsWay'
 };
@@ -20,21 +20,22 @@ var CW_CONFIG = {
  * so the site is fully clickable before the backend is deployed.
  */
 async function cwApiCall(action, payload) {
-  if (!CW_CONFIG.API_URL || CW_CONFIG.API_URL.indexOf('PASTE_YOUR') === 0) {
-    return cwDemoFallback(action, payload);
-  }
   try {
+    if (!CW_CONFIG.API_URL || CW_CONFIG.API_URL.indexOf('PASTE_YOUR') === 0) {
+      return await cwDemoFallback(action, payload);
+    }
     var res = await fetch(CW_CONFIG.API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
       body: JSON.stringify({ action: action, payload: payload || {} })
     });
     var json = await res.json();
-    if (!json.ok) throw new Error(json.error || 'Unknown backend error');
+    if (!json.ok) throw new Error(json.error || 'Something went wrong. Please try again.');
     return json.data;
   } catch (err) {
     console.error('CabsWay API error:', err);
-    cwToast('Could not reach the server. Please try again.');
+    var message = (err && err.message) ? err.message : 'Could not reach the server. Please try again.';
+    cwToast(message);
     throw err;
   }
 }

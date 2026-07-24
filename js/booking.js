@@ -103,15 +103,25 @@ function setupModeToggle() {
 function renderVehiclePicker() {
   var wrap = document.getElementById('vehicle-pick');
   wrap.innerHTML = '';
-  var available = cwVehicles.filter(function (v) { return v.status === 'Available'; });
-  available.forEach(function (v, idx) {
+  // Show one card per unique model — customers pick "Innova Crysta", not a specific
+  // individual car. The exact vehicle is assigned by the operator when the trip is created.
+  var seenModels = {};
+  var models = [];
+  cwVehicles.forEach(function (v) {
+    if (v.status !== 'Available') return;
+    if (seenModels[v.model]) return;
+    seenModels[v.model] = true;
+    models.push(v);
+  });
+
+  models.forEach(function (v, idx) {
     var el = document.createElement('label');
     el.className = 'vehicle-option' + (idx === 0 ? ' selected' : '');
     el.innerHTML =
-      '<input type="radio" name="vehicle" value="' + v.type + '" ' + (idx === 0 ? 'checked' : '') + '>' +
-      '<img src="' + v.img + '" alt="' + v.model + '">' +
-      '<strong>' + v.type + '</strong>' +
-      '<small>' + v.model + ' · up to ' + v.capacity + ' seats</small>';
+      '<input type="radio" name="vehicle" value="' + v.model + '" ' + (idx === 0 ? 'checked' : '') + '>' +
+      '<img src="' + v.img + '" alt="' + v.model + '" loading="lazy" decoding="async">' +
+      '<strong>' + v.model + '</strong>' +
+      '<small>' + v.type + ' · up to ' + v.capacity + ' seats</small>';
     el.addEventListener('click', function () {
       wrap.querySelectorAll('.vehicle-option').forEach(function (o) { o.classList.remove('selected'); });
       el.classList.add('selected');
@@ -135,7 +145,7 @@ function updateTripTicket() {
   document.getElementById('ticket-route').textContent = pickup + ' → ' + drop;
   document.getElementById('ticket-datetime').textContent = (date || '—') + (time ? ' · ' + time : '');
   document.getElementById('ticket-passengers').textContent = passengers + ' passenger(s) · ' + tripType;
-  document.getElementById('ticket-vehicle').textContent = cwSelectedVehicle ? (cwSelectedVehicle.type + ' — ' + cwSelectedVehicle.model) : '—';
+  document.getElementById('ticket-vehicle').textContent = cwSelectedVehicle ? (cwSelectedVehicle.model + ' (' + cwSelectedVehicle.type + ')') : '—';
 }
 
 async function onSubmitBooking(e) {
@@ -154,7 +164,7 @@ async function onSubmitBooking(e) {
     passengers: document.getElementById('b-passengers').value,
     tripType: document.getElementById('b-trip-type').value,
     routeType: mode === 'fixed' ? 'Fixed Route' : 'Custom Destination',
-    vehicleType: cwSelectedVehicle.type,
+    vehicleType: cwSelectedVehicle.model,
     customerName: document.getElementById('b-name').value,
     customerPhone: document.getElementById('b-phone').value,
     notes: document.getElementById('b-notes').value

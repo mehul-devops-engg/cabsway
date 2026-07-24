@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   document.getElementById('today-label').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   var today = new Date().toISOString().split('T')[0];
-  var trips = await cwApiCall('getTrips');
-  var bookings = await cwApiCall('getBookings');
+  var results = await Promise.all([cwApiCall('getTrips'), cwApiCall('getBookings')]);
+  var trips = results[0];
+  var bookings = results[1];
 
   var todaysTrips = trips.filter(function (t) { return t.date === today; });
   var todaysBookings = bookings.filter(function (b) { return b.date === today; });

@@ -13,7 +13,7 @@
 <link rel="icon" href="images/favicon.ico">
 <link rel="stylesheet" href="css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
@@ -24,7 +24,6 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="booking.html" class="active">Book a Cab</a></li>
-        <li><a href="fleet.html">Fleet</a></li>
         <li><a href="routes.html">Popular Routes</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="reviews.html">Reviews</a></li>
@@ -49,7 +48,7 @@
 </section>
 
 <section class="section-tight">
-  <div class="container" style="display:grid;grid-template-columns:1.3fr .9fr;gap:32px;align-items:start;">
+  <div class="container split-layout">
 
     <form id="booking-form" class="booking-panel">
       <div class="field">
@@ -70,15 +69,20 @@
       <div id="custom-route-fields" style="display:none;">
         <div class="form-row">
           <div class="field">
-            <label for="b-pickup">Pickup Location</label>
-            <input type="text" id="b-pickup" placeholder="Type any pickup location in India">
+            <label for="b-pickup">Pickup City</label>
+            <select id="b-pickup">
+              <option value="Nashik">Nashik</option>
+              <option value="Pune">Pune</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Chhatrapati Sambhaji Nagar">Chhatrapati Sambhaji Nagar</option>
+            </select>
           </div>
           <div class="field">
             <label for="b-drop">Drop Location</label>
-            <input type="text" id="b-drop" placeholder="Type any drop location in India">
+            <input type="text" id="b-drop" placeholder="Type any destination in India">
           </div>
         </div>
-        <p class="text-sm muted">Enter any pickup and drop, anywhere in India — not limited to a preset list.</p>
+        <p class="text-sm muted">Custom trips start from Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar and can go anywhere in India.</p>
       </div>
 
 

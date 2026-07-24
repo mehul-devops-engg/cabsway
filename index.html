@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CabsWay — Nashik's Outstation Cab Service | Nashik, Pune, Mumbai Cabs</title>
-<meta name="description" content="CabsWay is Nashik's trusted outstation cab service — fixed routes to Pune, Mumbai and Chhatrapati Sambhaji Nagar, or a custom pickup and drop anywhere in India. Book on WhatsApp, fare confirmed by our team.">
+<meta name="description" content="CabsWay is Nashik's trusted outstation cab service — fixed routes to Pune, Mumbai and Chhatrapati Sambhaji Nagar, or a custom trip from any of these 4 cities to anywhere in India. Book on WhatsApp, fare confirmed by our team.">
 <meta name="keywords" content="cabsway, cabs way, cab's way, cab's-way, nashik cab service, nashik pune cab, nashik mumbai cab, nashik to chhatrapati sambhaji nagar cab, outstation cabs nashik, cab booking anywhere in india">
 <link rel="canonical" href="https://cabsway.in/">
 <meta name="robots" content="index, follow">
@@ -15,7 +15,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CabsWay">
 <meta property="og:title" content="CabsWay — Nashik's Outstation Cab Service">
-<meta property="og:description" content="Fixed routes between Nashik, Pune, Mumbai and Chhatrapati Sambhaji Nagar, or a custom trip anywhere in India — booked and confirmed on WhatsApp.">
+<meta property="og:description" content="Fixed routes between Nashik, Pune, Mumbai and Chhatrapati Sambhaji Nagar, or a custom trip from any of these 4 cities to anywhere in India — booked and confirmed on WhatsApp.">
 <meta property="og:image" content="https://cabsway.in/images/og-image.png">
 <meta property="og:url" content="https://cabsway.in/">
 <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
 
 <!-- Local business / taxi service schema. No physical office — service covers the listed area. -->
 <script type="application/ld+json">
@@ -37,13 +37,12 @@
   "image": "https://cabsway.in/images/og-image.png",
   "url": "https://cabsway.in/",
   "telephone": "+91-91588-18546",
+  "email": "rushikeshahire125@gmail.com",
   "areaServed": [
     { "@type": "City", "name": "Nashik" },
     { "@type": "City", "name": "Pune" },
     { "@type": "City", "name": "Mumbai" },
     { "@type": "City", "name": "Chhatrapati Sambhaji Nagar" },
-    { "@type": "City", "name": "Shirdi" },
-    { "@type": "City", "name": "Trimbakeshwar" },
     { "@type": "Country", "name": "India" }
   ],
   "aggregateRating": {
@@ -65,7 +64,6 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="booking.html">Book a Cab</a></li>
-        <li><a href="fleet.html">Fleet</a></li>
         <li><a href="routes.html">Popular Routes</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="reviews.html">Reviews</a></li>
@@ -88,10 +86,10 @@
       <div>
         <p class="eyebrow">Nashik's outstation cab service</p>
         <h1>CabsWay: fixed routes,<br>custom trips, one WhatsApp.</h1>
-        <p class="hero-sub">CabsWay runs daily outstation cabs from Nashik to Pune, Mumbai and Chhatrapati Sambhaji Nagar — plus custom pickups anywhere in India, including Shirdi and Trimbakeshwar. Pick a route, share your details, and our team confirms your driver, car and fare directly on WhatsApp.</p>
+        <p class="hero-sub">CabsWay runs daily outstation cabs from Nashik to Pune, Mumbai and Chhatrapati Sambhaji Nagar. Need to go somewhere else entirely? Start your trip from any of these 4 cities and go anywhere in India as a custom booking. Pick a route, share your details, and our team confirms your driver, car and fare directly on WhatsApp.</p>
 
         <div class="route-line" aria-hidden="true">
-          <img src="images/route-line.svg" alt="" style="width:100%;height:100%;">
+          <img src="images/route-line.svg" alt="" style="width:100%;height:100%;" loading="lazy" decoding="async">
         </div>
 
         <div class="hero-stats">
@@ -122,17 +120,19 @@
           </div>
 
           <div id="qs-custom-fields" style="display:none;">
-            <div class="form-row">
-              <div class="field">
-                <label for="qs-pickup">Pickup</label>
-                <input type="text" id="qs-pickup" placeholder="Type any pickup location">
-              </div>
-              <div class="field">
-                <label for="qs-drop">Drop</label>
-                <input type="text" id="qs-drop" placeholder="Type any drop location">
-              </div>
+            <div class="field">
+              <label for="qs-pickup">Pickup City</label>
+              <select id="qs-pickup">
+                <option value="Nashik">Nashik</option>
+                <option value="Pune">Pune</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Chhatrapati Sambhaji Nagar">Chhatrapati Sambhaji Nagar</option>
+              </select>
             </div>
-            <p class="text-sm muted" style="margin-top:-6px;">Anywhere in India — just type it in.</p>
+            <div class="field">
+              <label for="qs-drop">Drop Location</label>
+              <input type="text" id="qs-drop" placeholder="Type any destination in India">
+            </div>
           </div>
 
           <div class="form-row">
@@ -164,27 +164,27 @@
       <h2>Our most-booked routes, ready to go</h2>
       <div class="grid grid-4 reveal">
         <a href="routes.html#nashik-pune" class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/route.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/route.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Nashik ⇄ Pune</h3>
-          <p class="text-sm">Our busiest corridor — daily sedans, SUVs and tempo travellers.</p>
+          <p class="text-sm">Our busiest corridor — daily sedans and SUVs.</p>
         </a>
         <a href="routes.html#nashik-mumbai" class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/route.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/route.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Nashik ⇄ Mumbai</h3>
           <p class="text-sm">City-to-city cabs, including drops to Mumbai Airport on request.</p>
         </a>
         <a href="routes.html#nashik-csn" class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/route.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/route.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Nashik ⇄ Chhatrapati Sambhaji Nagar</h3>
           <p class="text-sm">Reliable connect to Chhatrapati Sambhaji Nagar (Aurangabad).</p>
         </a>
         <a href="routes.html#mumbai-pune" class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/route.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/route.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Mumbai ⇄ Pune</h3>
           <p class="text-sm">Expressway cabs between Maharashtra's two biggest cities.</p>
         </a>
       </div>
-      <p class="center" style="margin-top:24px;">Travelling to Shirdi, Trimbakeshwar or somewhere else? <a href="booking.html">Book it as a custom destination →</a></p>
+      <p class="center" style="margin-top:24px;">Need to go further? <a href="booking.html">Book a custom trip from Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar to anywhere in India →</a></p>
       <p class="center" style="margin-top:10px;"><a href="routes.html" class="btn btn-dark">View All Routes</a></p>
     </div>
   </section>
@@ -196,32 +196,32 @@
       <h2>Nashik-based, India-wide reach</h2>
       <div class="grid grid-3 reveal">
         <div class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/route.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/route.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Fixed or Custom Trips</h3>
-          <p>Take a preset fixed route or tell us your own pickup and drop — either way, your fare is confirmed by our team before you travel.</p>
+          <p>Take a preset fixed route, or start a custom trip from Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar to anywhere in India.</p>
         </div>
         <div class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/whatsapp.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/whatsapp.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>WhatsApp Confirmation</h3>
           <p>Every booking is confirmed directly on WhatsApp with driver, car and fare details.</p>
         </div>
         <div class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/shield.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/shield.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Verified Vehicles</h3>
           <p>Every car on the fleet is inspected and insured before it goes on the road.</p>
         </div>
         <div class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/clock.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/clock.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>On-Time Pickup</h3>
           <p>Real seat &amp; trip tracking means we never overbook a car past capacity.</p>
         </div>
         <div class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/seat.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/seat.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>Right-Sized Fleet</h3>
-          <p>From a 4-seat hatchback to a 12-seat tempo traveller for group trips.</p>
+          <p>From a 4-seat hatchback to a 7-seat SUV, sized to your group.</p>
         </div>
         <div class="card feature-card">
-          <div class="icon-badge"><img src="images/icons/star.svg" alt=""></div>
+          <div class="icon-badge"><img src="images/icons/star.svg" alt="" loading="lazy" decoding="async"></div>
           <h3>4.8★ Rated</h3>
           <p>Rated by travellers making Nashik-Pune-Mumbai runs every week.</p>
         </div>
@@ -245,7 +245,7 @@
         </div>
         <div class="faq-item">
           <div class="faq-q">Can I book a custom destination that isn't a fixed route?</div>
-          <div class="faq-a"><p>Yes. Choose "Custom Destination" on the booking form and enter any pickup and drop anywhere in India — Shirdi and Trimbakeshwar are common requests.</p></div>
+          <div class="faq-a"><p>Yes. Choose "Custom Destination" on the booking form, pick your starting city — Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar — and type any destination anywhere in India.</p></div>
         </div>
         <div class="faq-item">
           <div class="faq-q">What payment methods are accepted?</div>
@@ -267,7 +267,6 @@
     <div>
       <h4>Explore</h4>
       <ul>
-        <li><a href="fleet.html">Our Fleet</a></li>
         <li><a href="routes.html">Popular Routes</a></li>
         <li><a href="reviews.html">Reviews</a></li>
       </ul>
@@ -285,14 +284,14 @@
       <h4>Contact</h4>
       <ul>
         <li>📞 +91 91588 18546</li>
-        <li>✉️ rushikeshahire125@cabsway.in</li>
+        <li>✉️ rushikeshahire125@gmail.com</li>
         <li>📍 Nashik, Maharashtra</li>
       </ul>
     </div>
   </div>
   <div class="container footer-bottom">
     <span>© 2026 CabsWay. All rights reserved.</span>
-    <span>Serving Nashik · Pune · Mumbai · Chhatrapati Sambhaji Nagar · Shirdi · Trimbakeshwar</span>
+    <span>Fixed routes: Nashik · Pune · Mumbai · Chhatrapati Sambhaji Nagar — custom trips anywhere in India</span>
   </div>
 </footer>
 

@@ -4,22 +4,42 @@ var cwAllTrips = [];
 var cwAllVehiclesForTrips = [];
 
 document.addEventListener('DOMContentLoaded', async function () {
-  cwAllVehiclesForTrips = await cwApiCall('getVehicles');
-  document.getElementById('t-carId').innerHTML = cwAllVehiclesForTrips.map(function (v) {
-    return '<option value="' + v.carId + '" data-capacity="' + v.capacity + '" data-type="' + v.type + '">' + v.carId + ' — ' + v.model + ' (' + v.capacity + ' seats)</option>';
-  }).join('');
-  document.getElementById('t-carId').addEventListener('change', function () {
-    var opt = this.selectedOptions[0];
-    if (opt) document.getElementById('t-totalSeats').value = opt.dataset.capacity;
-  });
-  document.getElementById('t-carId').dispatchEvent(new Event('change'));
+  var results = await Promise.all([cwApiCall('getVehicles'), cwApiCall('getTrips')]);
+  cwAllVehiclesForTrips = results[0];
+  cwAllTrips = results[1];
 
-  await loadTrips();
+  populateVehicleDropdown();
+  document.getElementById('t-carId').addEventListener('change', applySelectedVehicleCapacity);
+  applySelectedVehicleCapacity();
+
+  renderTrips();
   document.getElementById('trip-search').addEventListener('input', renderTrips);
   document.getElementById('trip-filter-status').addEventListener('change', renderTrips);
   document.getElementById('trip-filter-date').addEventListener('change', renderTrips);
   document.getElementById('trip-form').addEventListener('submit', onSaveTrip);
 });
+
+/** Only Available vehicles can be picked for a new/edited trip — Maintenance ones are excluded,
+ *  unless a trip already has one assigned (kept visible, greyed out, so editing doesn't break it). */
+function populateVehicleDropdown(keepCarId) {
+  var select = document.getElementById('t-carId');
+  var available = cwAllVehiclesForTrips.filter(function (v) { return v.status === 'Available'; });
+  var extra = keepCarId ? cwAllVehiclesForTrips.filter(function (v) { return v.carId === keepCarId && v.status !== 'Available'; }) : [];
+  var options = available.concat(extra);
+  select.innerHTML = options.map(function (v) {
+    var label = v.carId + ' — ' + v.model + ' (' + v.capacity + ' seats)' + (v.status !== 'Available' ? ' — under maintenance' : '');
+    return '<option value="' + v.carId + '" data-capacity="' + v.capacity + '" data-type="' + v.type + '">' + label + '</option>';
+  }).join('');
+  if (keepCarId) select.value = keepCarId;
+}
+
+/** Seats can't be typed by hand — they always match the selected vehicle's real capacity. */
+function applySelectedVehicleCapacity() {
+  var opt = document.getElementById('t-carId').selectedOptions[0];
+  var seatsInput = document.getElementById('t-totalSeats');
+  seatsInput.value = opt ? opt.dataset.capacity : '';
+  seatsInput.readOnly = true;
+}
 
 async function loadTrips() {
   cwAllTrips = await cwApiCall('getTrips');
@@ -61,6 +81,8 @@ function cwOpenTripModal(tripId) {
   form.reset();
   document.getElementById('t-tripId').value = '';
   document.getElementById('trip-modal-title').textContent = 'New Trip';
+  populateVehicleDropdown(); // reset to Available-only by default
+
   if (tripId) {
     var t = cwAllTrips.find(function (x) { return x.tripId === tripId; });
     if (t) {
@@ -70,11 +92,11 @@ function cwOpenTripModal(tripId) {
       document.getElementById('t-drop').value = t.drop;
       document.getElementById('t-date').value = t.date;
       document.getElementById('t-time').value = t.time;
-      document.getElementById('t-carId').value = t.carId;
-      document.getElementById('t-totalSeats').value = t.totalSeats;
       document.getElementById('t-driverName').value = t.driverName;
+      populateVehicleDropdown(t.carId); // include its own vehicle even if now under maintenance
     }
   }
+  applySelectedVehicleCapacity();
   cwOpenModal('trip-modal');
 }
 
@@ -92,16 +114,20 @@ async function onSaveTrip(e) {
     driverName: document.getElementById('t-driverName').value
   };
   var existingId = document.getElementById('t-tripId').value;
-  if (existingId) {
-    payload.tripId = existingId;
-    await cwApiCall('updateTrip', payload);
-    cwToast('Trip ' + existingId + ' updated.');
-  } else {
-    var created = await cwApiCall('createTrip', payload);
-    cwToast('Trip ' + created.tripId + ' created.');
+  try {
+    if (existingId) {
+      payload.tripId = existingId;
+      await cwApiCall('updateTrip', payload);
+      cwToast('Trip ' + existingId + ' updated.');
+    } else {
+      var created = await cwApiCall('createTrip', payload);
+      cwToast('Trip ' + created.tripId + ' created.');
+    }
+    cwCloseModal('trip-modal');
+    await loadTrips();
+  } catch (err) {
+    /* cwApiCall already showed the reason (e.g. duplicate trip, vehicle in maintenance) — keep the modal open so it can be fixed */
   }
-  cwCloseModal('trip-modal');
-  await loadTrips();
 }
 
 async function cwCompleteTrip(tripId) {

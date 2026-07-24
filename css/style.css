@@ -308,6 +308,22 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .data-table td { padding: 12px; border-bottom: 1px solid var(--line); }
 .data-table tr:hover td { background: var(--paper-dim); }
 
+/* ---------- Two-column responsive layout (booking, contact, etc.) ---------- */
+.split-layout {
+  display: grid;
+  grid-template-columns: 1.3fr .9fr;
+  gap: 32px;
+  align-items: start;
+}
+.split-layout-even {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 860px) {
+  .split-layout, .split-layout-even { grid-template-columns: 1fr; }
+}
+
 /* ---------- Utilities ---------- */
 .center { text-align: center; }
 .mt-0 { margin-top: 0; }
