@@ -140,6 +140,14 @@
       <p class="text-sm muted center" style="margin-top:10px;">You'll review your trip details before the message is sent — nothing is charged on this site.</p>
     </form>
 
+    <!-- Shown only after WhatsApp opens — the booking record is saved only once this is confirmed -->
+    <div class="card" id="whatsapp-confirm-panel" style="display:none;border-color:var(--marigold);">
+      <h3 class="mt-0">Did you send the WhatsApp message?</h3>
+      <p class="text-sm muted">We've opened WhatsApp with your trip details pre-filled. Your booking is only saved on our end once you confirm you've sent it — this keeps our team's list accurate.</p>
+      <button type="button" id="confirm-sent-btn" class="btn btn-primary btn-block">Yes, I've Sent It — Save My Booking</button>
+      <button type="button" id="confirm-cancel-btn" class="btn btn-ghost btn-block" style="margin-top:8px;">I Haven't Sent It Yet</button>
+    </div>
+
     <!-- Live trip summary (no fare shown — confirmed by our team on WhatsApp) -->
     <div class="meter" id="trip-ticket">
       <span class="meter-label">Trip Ticket Preview</span>
