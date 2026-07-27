@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book a Cab Online | Fixed Routes & Custom Trips | CabsWay Nashik</title>
-<meta name="description" content="Book a CabsWay outstation cab in minutes — choose a fixed route (Nashik, Pune, Mumbai, Chhatrapati Sambhaji Nagar) or a custom pickup and drop, then confirm your driver and fare on WhatsApp.">
-<meta name="keywords" content="cabsway, cabs way, cab's way, book cab online nashik, nashik pune cab booking, nashik mumbai cab booking">
+<meta name="description" content="Book a CabsWay outstation cab in minutes — choose a fixed route, a custom pickup and drop, or a shared Ertiga seat between Nashik and Pune at ₹600/seat.">
+<meta name="keywords" content="cabsway, cabs way, cab's way, book cab online nashik, nashik pune cab booking, nashik mumbai cab booking, shared cab nashik pune, ertiga sharing nashik pune">
 <link rel="canonical" href="https://cabsway.in/booking.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Book a Cab | CabsWay">
@@ -43,7 +43,7 @@
   <div class="container">
     <p class="eyebrow">Cab Booking</p>
     <h1>Book your ride</h1>
-    <p class="hero-sub" style="color:var(--slate);">Fill in your trip details, pick a vehicle, and confirm instantly on WhatsApp. Our team locks the driver and car once you send the message.</p>
+    <p class="hero-sub" style="color:var(--slate);">Fill in your trip details, pick a vehicle — or share a seat in our Ertiga between Nashik and Pune — and confirm instantly on WhatsApp. Our team locks the driver and car once you send the message.</p>
   </div>
 </section>
 
@@ -56,6 +56,7 @@
         <select id="b-mode">
           <option value="fixed">Fixed Route (Nashik ⇄ Pune / Mumbai / Chhatrapati Sambhaji Nagar, Mumbai ⇄ Pune)</option>
           <option value="custom">Custom Pickup &amp; Destination</option>
+          <option value="share">Share a Cab (Ertiga, Nashik ⇄ Pune — ₹600/seat)</option>
         </select>
       </div>
 
@@ -85,6 +86,17 @@
         <p class="text-sm muted">Custom trips start from Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar and can go anywhere in India.</p>
       </div>
 
+      <div id="share-route-fields" style="display:none;">
+        <div class="field">
+          <label for="b-share-direction">Direction</label>
+          <select id="b-share-direction">
+            <option value="0">Nashik → Pune</option>
+            <option value="1">Pune → Nashik</option>
+          </select>
+        </div>
+        <p class="text-sm muted">Shared seats in our Ertiga — ₹600 per seat, Nashik ⇄ Pune only. Pick how many seats you need below.</p>
+      </div>
+
 
       <div class="form-row">
         <div class="field">
@@ -99,12 +111,12 @@
 
       <div class="form-row">
         <div class="field">
-          <label for="b-passengers">Passenger Count</label>
+          <label for="b-passengers" id="b-passengers-label">Passenger Count</label>
           <select id="b-passengers">
             <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option>
           </select>
         </div>
-        <div class="field">
+        <div class="field" id="b-trip-type-field">
           <label for="b-trip-type">Trip Type</label>
           <select id="b-trip-type">
             <option value="One Way">One Way</option>
@@ -148,14 +160,15 @@
       <button type="button" id="confirm-cancel-btn" class="btn btn-ghost btn-block" style="margin-top:8px;">I Haven't Sent It Yet</button>
     </div>
 
-    <!-- Live trip summary (no fare shown — confirmed by our team on WhatsApp) -->
+    <!-- Live trip summary (fare only shown for Share a Cab — other modes are confirmed by our team on WhatsApp) -->
     <div class="meter" id="trip-ticket">
       <span class="meter-label">Trip Ticket Preview</span>
       <div class="meter-breakdown" style="border-top:none;margin-top:10px;"><span>Route</span><span id="ticket-route" style="color:#fff;">—</span></div>
       <div class="meter-breakdown"><span>Date &amp; Time</span><span id="ticket-datetime">—</span></div>
       <div class="meter-breakdown"><span>Passengers</span><span id="ticket-passengers">—</span></div>
       <div class="meter-breakdown"><span>Vehicle</span><span id="ticket-vehicle">—</span></div>
-      <p class="text-sm" style="color:#9AA5BF;margin-top:14px;">Fares aren't published on the site — every trip is quoted directly by our team. Tap "Book Now" and we'll confirm your fare, driver and car on WhatsApp within minutes.</p>
+      <div class="meter-breakdown" id="ticket-fare-row" style="display:none;"><span>Shared Fare</span><span id="ticket-fare" style="color:var(--marigold);">—</span></div>
+      <p class="text-sm" id="ticket-note" style="color:#9AA5BF;margin-top:14px;">Fares aren't published on the site — every trip is quoted directly by our team. Tap "Book Now" and we'll confirm your fare, driver and car on WhatsApp within minutes.</p>
     </div>
   </div>
 </section>

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CabsWay — Nashik's Outstation Cab Service | Nashik, Pune, Mumbai Cabs</title>
-<meta name="description" content="CabsWay is Nashik's trusted outstation cab service — fixed routes to Pune, Mumbai and Chhatrapati Sambhaji Nagar, or a custom trip from any of these 4 cities to anywhere in India. Book on WhatsApp, fare confirmed by our team.">
-<meta name="keywords" content="cabsway, cabs way, cab's way, cab's-way, nashik cab service, nashik pune cab, nashik mumbai cab, nashik to chhatrapati sambhaji nagar cab, outstation cabs nashik, cab booking anywhere in india">
+<meta name="description" content="CabsWay is Nashik's trusted outstation cab service — fixed routes to Pune, Mumbai and Chhatrapati Sambhaji Nagar, a custom trip from any of these 4 cities to anywhere in India, or a shared Ertiga seat between Nashik and Pune at ₹600/seat.">
+<meta name="keywords" content="cabsway, cabs way, cab's way, cab's-way, nashik cab service, nashik pune cab, nashik mumbai cab, nashik to chhatrapati sambhaji nagar cab, outstation cabs nashik, cab booking anywhere in india, shared cab nashik pune, ertiga sharing">
 <link rel="canonical" href="https://cabsway.in/">
 <meta name="robots" content="index, follow">
 <meta name="author" content="CabsWay">
@@ -109,6 +109,7 @@
             <select id="qs-mode">
               <option value="fixed">Fixed Route</option>
               <option value="custom">Custom Destination</option>
+              <option value="share">Share a Cab (Ertiga, ₹600/seat)</option>
             </select>
           </div>
 
@@ -117,6 +118,17 @@
               <label for="qs-fixed-route">Select Route</label>
               <select id="qs-fixed-route"></select>
             </div>
+          </div>
+
+          <div id="qs-share-fields" style="display:none;">
+            <div class="field">
+              <label for="qs-share-direction">Direction</label>
+              <select id="qs-share-direction">
+                <option value="0">Nashik → Pune</option>
+                <option value="1">Pune → Nashik</option>
+              </select>
+            </div>
+            <p class="text-sm muted" style="color:#B7C0D4;">Shared Ertiga seat, ₹600 each, Nashik ⇄ Pune only.</p>
           </div>
 
           <div id="qs-custom-fields" style="display:none;">
@@ -186,6 +198,16 @@
       </div>
       <p class="center" style="margin-top:24px;">Need to go further? <a href="booking.html">Book a custom trip from Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar to anywhere in India →</a></p>
       <p class="center" style="margin-top:10px;"><a href="routes.html" class="btn btn-dark">View All Routes</a></p>
+
+      <div class="card" style="margin-top:32px;border-color:var(--marigold);max-width:640px;margin-left:auto;margin-right:auto;">
+        <div class="flex between" style="flex-wrap:wrap;gap:12px;">
+          <div>
+            <h3 style="margin-bottom:4px;">🚗 Share a Cab — Nashik ⇄ Pune</h3>
+            <p class="text-sm muted" style="margin:0;">Book a single seat in our Ertiga for just <strong style="color:var(--marigold-dark);">₹600/seat</strong>, instead of the whole car.</p>
+          </div>
+          <a href="booking.html?mode=share" class="btn btn-primary btn-sm">Share a Seat</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -246,6 +268,10 @@
         <div class="faq-item">
           <div class="faq-q">Can I book a custom destination that isn't a fixed route?</div>
           <div class="faq-a"><p>Yes. Choose "Custom Destination" on the booking form, pick your starting city — Nashik, Pune, Mumbai or Chhatrapati Sambhaji Nagar — and type any destination anywhere in India.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What is Share a Cab?</div>
+          <div class="faq-a"><p>Share a Cab lets you book a single seat in our Ertiga on the Nashik ⇄ Pune route for ₹600 per seat, instead of booking the whole car. Choose "Share a Cab" on the <a href="booking.html">booking page</a>.</p></div>
         </div>
         <div class="faq-item">
           <div class="faq-q">What payment methods are accepted?</div>
@@ -311,9 +337,10 @@
     }).join('');
 
     document.getElementById('qs-mode').addEventListener('change', function () {
-      var isFixed = this.value === 'fixed';
-      document.getElementById('qs-fixed-fields').style.display = isFixed ? 'block' : 'none';
-      document.getElementById('qs-custom-fields').style.display = isFixed ? 'none' : 'block';
+      var mode = this.value;
+      document.getElementById('qs-fixed-fields').style.display = mode === 'fixed' ? 'block' : 'none';
+      document.getElementById('qs-custom-fields').style.display = mode === 'custom' ? 'block' : 'none';
+      document.getElementById('qs-share-fields').style.display = mode === 'share' ? 'block' : 'none';
     });
 
     document.getElementById('quick-search-form').addEventListener('submit', function (e) {
@@ -323,6 +350,10 @@
       if (mode === 'fixed') {
         var r = fixedRoutes[Number(document.getElementById('qs-fixed-route').value)];
         pickup = r.from; drop = r.to;
+      } else if (mode === 'share') {
+        var reversed = document.getElementById('qs-share-direction').value === '1';
+        pickup = reversed ? 'Pune' : 'Nashik';
+        drop = reversed ? 'Nashik' : 'Pune';
       } else {
         pickup = document.getElementById('qs-pickup').value;
         drop = document.getElementById('qs-drop').value;
