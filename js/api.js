@@ -9,7 +9,7 @@
    =================================================================== */
 
 var CW_CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbxcKGW_vMvB83gWAZ7nRMJunw2AEmgS0cBv0xXUfuOyYkSfR53eoQPDIMNWp4le1udq/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycby_lxPdUXL2vB9FWYoB4WHxQjSbFvx6MZIE_pUJ_7q8dFjY3KGqXAfaQeau-rmqzg/exec',
   WHATSAPP_NUMBER: '919158818546', // business WhatsApp number, country code + number, no + or spaces
   BUSINESS_NAME: 'CabsWay'
 };
