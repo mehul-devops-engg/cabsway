@@ -5,6 +5,8 @@ var cwRoutePairs = [];   // [{from, to}] — canonical pairs from the backend
 var cwFixedRoutes = [];  // both directions, built from cwRoutePairs, for the dropdown
 var cwSelectedVehicle = null;
 var cwPendingBookingData = null; // set right before WhatsApp opens; only saved once the customer confirms they sent it
+var CW_ORIGINAL_TITLE = document.title;
+var CW_PENDING_TITLE = "⏳ Confirm your booking — CabsWay";
 
 // Share a Cab — fixed to one vehicle model, one route, one published rate.
 var CW_SHARE_MODEL = 'Ertiga';
@@ -32,8 +34,31 @@ document.addEventListener('DOMContentLoaded', async function () {
   });
 
   document.getElementById('booking-form').addEventListener('submit', onSubmitBooking);
-  document.getElementById('confirm-sent-btn').addEventListener('click', onConfirmSent);
-  document.getElementById('confirm-cancel-btn').addEventListener('click', onConfirmCancel);
+  var sentBtn = document.getElementById('confirm-sent-btn');
+  var cancelBtn = document.getElementById('confirm-cancel-btn');
+  if (sentBtn && cancelBtn) {
+    sentBtn.addEventListener('click', onConfirmSent);
+    cancelBtn.addEventListener('click', onConfirmCancel);
+  } else {
+    console.error('CabsWay: confirm-sent-btn/confirm-cancel-btn not found — booking.html may be out of date.');
+  }
+
+  // If a booking is still awaiting confirmation when the customer comes back to this tab
+  // (after switching to WhatsApp to send the message), nudge them so they don't miss it.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && cwPendingBookingData) {
+      cwToast("Welcome back! Tap \"Yes, I've Sent It\" below to finish your booking.");
+    }
+  });
+
+  // Warn if they try to close/navigate away with a booking still unconfirmed, so it
+  // doesn't silently vanish just because they forgot to come back and confirm it.
+  window.addEventListener('beforeunload', function (e) {
+    if (cwPendingBookingData) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
 });
 
 function prefillFromQuery() {
@@ -235,6 +260,30 @@ function updateTripTicket() {
   }
 }
 
+/** Shows the WhatsApp confirmation modal. Falls back to a native confirm() dialog
+ *  if the modal element is missing for any reason (e.g. an out-of-date HTML file),
+ *  so a customer's booking can never silently fail to save. */
+function cwShowConfirmModal() {
+  var modal = document.getElementById('whatsapp-confirm-modal');
+  if (modal) {
+    modal.classList.add('open');
+    document.title = CW_PENDING_TITLE;
+  } else {
+    console.error('CabsWay: #whatsapp-confirm-modal not found on this page — falling back to a plain confirm() dialog. This usually means booking.html is out of date; re-upload it.');
+    if (window.confirm("Did you send the WhatsApp message?\n\nClick OK to save your booking.")) {
+      onConfirmSent();
+    } else {
+      cwPendingBookingData = null;
+    }
+  }
+}
+
+function cwHideConfirmModal() {
+  var modal = document.getElementById('whatsapp-confirm-modal');
+  if (modal) modal.classList.remove('open');
+  document.title = CW_ORIGINAL_TITLE;
+}
+
 async function onSubmitBooking(e) {
   e.preventDefault();
   if (!cwSelectedVehicle) { cwToast('Please select a vehicle.'); return; }
@@ -288,19 +337,17 @@ async function onSubmitBooking(e) {
     (isShare ? 'Please confirm my shared seat(s) for this ride.' : 'Please confirm the fare, driver and car for this trip.');
 
   window.open(cwBuildWhatsAppLink(summary), '_blank');
-  document.getElementById('whatsapp-confirm-panel').style.display = 'block';
-  document.getElementById('whatsapp-confirm-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  cwShowConfirmModal();
 }
 
 async function onConfirmSent() {
   if (!cwPendingBookingData) return;
   var btn = document.getElementById('confirm-sent-btn');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
   try {
     var booking = await cwApiCall('createBooking', cwPendingBookingData);
     cwToast('Booking ' + booking.bookingId + ' saved — our team will confirm shortly.');
-    document.getElementById('whatsapp-confirm-panel').style.display = 'none';
+    cwHideConfirmModal();
     cwPendingBookingData = null;
     document.getElementById('booking-form').reset();
     setupModeToggle();
@@ -308,12 +355,11 @@ async function onConfirmSent() {
   } catch (err) {
     /* cwApiCall already showed the reason */
   } finally {
-    btn.disabled = false;
-    btn.textContent = "Yes, I've Sent It — Save My Booking";
+    if (btn) { btn.disabled = false; btn.textContent = "Yes, I've Sent It — Save My Booking"; }
   }
 }
 
 function onConfirmCancel() {
-  document.getElementById('whatsapp-confirm-panel').style.display = 'none';
+  cwHideConfirmModal();
   cwPendingBookingData = null;
 }

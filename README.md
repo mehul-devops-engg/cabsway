@@ -1,7 +1,7 @@
 # CabsWay — Outstation Cab Booking Website
 
 **Live at:** cabsway.in
-**Contact:** +91 91588 18546 · rushikeshahire125@gmail.com
+**Contact:** +91 91588 18546 · rushikeshahire125@cabsway.in
 
 A full outstation cab booking website for CabsWay, Nashik — built with plain
 HTML/CSS/JS on the frontend, hosted free on GitHub Pages, with Google Sheets
@@ -140,6 +140,20 @@ dates/times always stay as clean `YYYY-MM-DD` / `HH:mm` strings.
   rejects it server-side as a second layer of protection.
 - The Cancel button no longer appears on bookings already marked
   Completed.
+- **Available Seats on the dashboard** no longer counts seats on trips
+  that are already Completed — a finished trip contributes 0, not
+  whatever was left unbooked.
+- **Passenger count vs. vehicle capacity**: the passenger dropdown on the
+  public booking page now disables any option above the selected
+  vehicle's real seating capacity (e.g. picking a 4-seat Swift disables
+  5/6/7). The backend also rejects it server-side if that's ever
+  bypassed.
+- **"Phantom" bookings**: previously, a booking was saved the moment
+  someone clicked "Book Now," even if they never actually sent the
+  WhatsApp message. Now nothing is saved until the customer explicitly
+  confirms — after WhatsApp opens — that they sent it, via a
+  "Yes, I've Sent It" button on the page. Abandoned requests no longer
+  clutter the admin Bookings list.
 
 **Fleet / vehicles**
 - The real fleet is now seeded in: **Swift, Aura, Ciaz, Ertiga, XL6,
@@ -160,7 +174,7 @@ dates/times always stay as clean `YYYY-MM-DD` / `HH:mm` strings.
   examples; copy across Home, Routes, About and FAQ now describes custom
   trips generically as "from these 4 cities to anywhere in India."
 - All contact details updated to the real phone (+91 91588 18546),
-  WhatsApp, and email (rushikeshahire125@gmail.com).
+  WhatsApp, and email (rushikeshahire125@cabsway.in).
 
 **Performance & mobile**
 - Google Fonts now load fewer weights (noticeably faster first paint).
@@ -196,7 +210,24 @@ dates/times always stay as clean `YYYY-MM-DD` / `HH:mm` strings.
 - [ ] Mark a vehicle as Maintenance in Fleet, confirm it disappears from
       both the public booking page and the "+ New Trip" vehicle list.
 
-## 6. If something looks wrong
+## 6. Share a Cab (Ertiga, Nashik ⇄ Pune, ₹600/seat)
+
+A third booking mode alongside Fixed Route and Custom Destination:
+- Only the **Ertiga** is offered (shown as a single card even though 4 exist
+  in the fleet — same one-card-per-model behavior as the rest of the site).
+- Only the **Nashik ⇄ Pune** route, selectable by direction.
+- The only place on the site where a **fare is shown** — ₹600 per seat,
+  calculated live as seats × ₹600, up to Ertiga's real capacity of 6.
+- Everything else works the same way as other bookings: WhatsApp
+  confirmation, the "did you actually send it" save-on-confirm step, and
+  the same backend capacity checks (a shared booking can't exceed 6 seats
+  on Ertiga, enforced automatically by the existing seat-validation logic
+  — no backend schema or logic changes were needed for this feature).
+
+To change the rate or vehicle later, edit `CW_SHARE_RATE_PER_SEAT` /
+`CW_SHARE_MODEL` / `CW_SHARE_ROUTE` at the top of `js/booking.js`.
+
+## 7. If something looks wrong
 
 Most issues trace back to one of:
 1. `js/api.js` — is `API_URL` the real deployed `/exec` link, not the
