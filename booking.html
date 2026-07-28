@@ -149,16 +149,8 @@
       </div>
 
       <button type="submit" class="btn btn-primary btn-block">Book Now — Confirm on WhatsApp</button>
-      <p class="text-sm muted center" style="margin-top:10px;">You'll review your trip details before the message is sent — nothing is charged on this site.</p>
+      <p class="text-sm muted center" style="margin-top:10px;">This opens WhatsApp in another tab. Send the message, then <strong>come back to this tab</strong> to finish saving your booking — nothing is charged on this site.</p>
     </form>
-
-    <!-- Shown only after WhatsApp opens — the booking record is saved only once this is confirmed -->
-    <div class="card" id="whatsapp-confirm-panel" style="display:none;border-color:var(--marigold);">
-      <h3 class="mt-0">Did you send the WhatsApp message?</h3>
-      <p class="text-sm muted">We've opened WhatsApp with your trip details pre-filled. Your booking is only saved on our end once you confirm you've sent it — this keeps our team's list accurate.</p>
-      <button type="button" id="confirm-sent-btn" class="btn btn-primary btn-block">Yes, I've Sent It — Save My Booking</button>
-      <button type="button" id="confirm-cancel-btn" class="btn btn-ghost btn-block" style="margin-top:8px;">I Haven't Sent It Yet</button>
-    </div>
 
     <!-- Live trip summary (fare only shown for Share a Cab — other modes are confirmed by our team on WhatsApp) -->
     <div class="meter" id="trip-ticket">
@@ -174,6 +166,18 @@
 </section>
 </main>
 
+<!-- Shown only after WhatsApp opens — as a blocking modal so it's impossible to miss when
+     the customer comes back to this tab. The booking is only saved once they confirm. -->
+<div class="site-modal-backdrop" id="whatsapp-confirm-modal">
+  <div class="site-modal">
+    <div class="modal-icon">💬</div>
+    <h3>Did you send the WhatsApp message?</h3>
+    <p class="text-sm muted">We opened WhatsApp in another tab with your trip details pre-filled. <strong>Please send that message now</strong>, then come back here and tap the button below — your booking is only saved on our end once you confirm.</p>
+    <button type="button" id="confirm-sent-btn" class="btn btn-primary btn-block">Yes, I've Sent It — Save My Booking</button>
+    <button type="button" id="confirm-cancel-btn" class="btn btn-ghost btn-block" style="margin-top:8px;">I Haven't Sent It Yet</button>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="container footer-bottom">
     <span>© 2026 CabsWay. All rights reserved.</span>
@@ -185,5 +189,9 @@
 <script src="js/api.js"></script>
 <script src="js/demo-data.js"></script>
 <script src="js/booking.js"></script>
+
+<a href="https://wa.me/919158818546" class="floating-whatsapp" target="_blank" rel="noopener" aria-label="Chat with CabsWay on WhatsApp">
+  <img src="images/icons/whatsapp.svg" alt="" width="30" height="30">
+</a>
 </body>
 </html>
